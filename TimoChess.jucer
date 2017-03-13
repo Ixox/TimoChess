@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<JUCERPROJECT id="Dazl5H" name="TimoChess" projectType="guiapp" version="1.0.0"
+              bundleIdentifier="ixox.TimoChess" includeBinaryInAppConfig="1"
+              jucerVersion="4.3.1">
+  <MAINGROUP id="XY9Tkw" name="TimoChess">
+    <GROUP id="{E73DF2E2-8476-8139-AFDD-0F96D603F201}" name="Images">
+      <FILE id="vPzKWK" name="bBishop.png" compile="0" resource="1" file="Source/images/bBishop.png"/>
+      <FILE id="WQGJ4u" name="bKing.png" compile="0" resource="1" file="Source/images/bKing.png"/>
+      <FILE id="tSEJmH" name="bKnight.png" compile="0" resource="1" file="Source/images/bKnight.png"/>
+      <FILE id="WuRVKe" name="bPawn.png" compile="0" resource="1" file="Source/images/bPawn.png"/>
+      <FILE id="lSCULp" name="bQueen.png" compile="0" resource="1" file="Source/images/bQueen.png"/>
+      <FILE id="fOp9QO" name="bRock.png" compile="0" resource="1" file="Source/images/bRock.png"/>
+      <FILE id="HKP8hQ" name="human.png" compile="0" resource="1" file="Source/images/human.png"/>
+      <FILE id="rh8a7g" name="rpi.png" compile="0" resource="1" file="Source/images/rpi.png"/>
+      <FILE id="tgwNrh" name="wBishop.png" compile="0" resource="1" file="Source/images/wBishop.png"/>
+      <FILE id="yoOn5g" name="wking.png" compile="0" resource="1" file="Source/images/wking.png"/>
+      <FILE id="bxxDA9" name="wKnight.png" compile="0" resource="1" file="Source/images/wKnight.png"/>
+      <FILE id="jhPvGL" name="wPawn.png" compile="0" resource="1" file="Source/images/wPawn.png"/>
+      <FILE id="wY05iC" name="wQueen.png" compile="0" resource="1" file="Source/images/wQueen.png"/>
+      <FILE id="u1MC1V" name="wRock.png" compile="0" resource="1" file="Source/images/wRock.png"/>
+    </GROUP>
+    <GROUP id="{F7FDFE90-4F81-8D3E-F74B-687DEDE4BE3F}" name="Source">
+      <FILE id="OoDvpj" name="BoardComponent.cpp" compile="1" resource="0"
+            file="Source/BoardComponent.cpp"/>
+      <FILE id="QD6HbD" name="BoardComponent.h" compile="0" resource="0"
+            file="Source/BoardComponent.h"/>
+      <FILE id="acE8Rm" name="ChessBoard.cpp" compile="1" resource="0" file="Source/ChessBoard.cpp"/>
+      <FILE id="NxgYTZ" name="ChessBoard.h" compile="0" resource="0" file="Source/ChessBoard.h"/>
+      <FILE id="VohLKC" name="GameListener.h" compile="0" resource="0" file="Source/GameListener.h"/>
+      <FILE id="hxM0FR" name="GamePage.cpp" compile="1" resource="0" file="Source/GamePage.cpp"/>
+      <FILE id="w3uYbw" name="GamePage.h" compile="0" resource="0" file="Source/GamePage.h"/>
+      <FILE id="aa1rEp" name="GameSetup.cpp" compile="1" resource="0" file="Source/GameSetup.cpp"/>
+      <FILE id="QASJuc" name="GameSetup.h" compile="0" resource="0" file="Source/GameSetup.h"/>
+      <FILE id="LVmt2A" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>
+      <FILE id="LDN8kF" name="StockfishWrapper.cpp" compile="1" resource="0"
+            file="Source/StockfishWrapper.cpp"/>
+      <FILE id="X4z9IG" name="StockfishWrapper.h" compile="0" resource="0"
+            file="Source/StockfishWrapper.h"/>
+    </GROUP>
+  </MAINGROUP>
+  <EXPORTFORMATS>
+    <LINUX_MAKE targetFolder="Builds/LinuxMakefile" smallIcon="rh8a7g" bigIcon="rh8a7g">
+      <CONFIGURATIONS>
+        <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="TimoChess"/>
+        <CONFIGURATION name="Release" isDebug="0" optimisation="3" targetName="TimoChess"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_core" path="JuceLibraryCode/modules"/>
+        <MODULEPATH id="juce_events" path="JuceLibraryCode/modules"/>
+        <MODULEPATH id="juce_graphics" path="JuceLibraryCode/modules"/>
+        <MODULEPATH id="juce_data_structures" path="JuceLibraryCode/modules"/>
+        <MODULEPATH id="juce_gui_basics" path="JuceLibraryCode/modules"/>
+        <MODULEPATH id="juce_gui_extra" path="JuceLibraryCode/modules"/>
+      </MODULEPATHS>
+    </LINUX_MAKE>
+  </EXPORTFORMATS>
+  <MODULES>
+    <MODULE id="juce_core" showAllCode="1" useLocalCopy="1"/>
+    <MODULE id="juce_data_structures" showAllCode="1" useLocalCopy="1"/>
+    <MODULE id="juce_events" showAllCode="1" useLocalCopy="1"/>
+    <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="1"/>
+    <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="1"/>
+    <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="1"/>
+  </MODULES>
+  <JUCEOPTIONS/>
+  <LIVE_SETTINGS>
+    <LINUX/>
+  </LIVE_SETTINGS>
+</JUCERPROJECT>
