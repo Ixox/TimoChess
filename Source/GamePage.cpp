@@ -99,6 +99,22 @@ GamePage::GamePage ()
                             ImageCache::getFromMemory (showBoard_png, showBoard_pngSize), 1.000f, Colour (0x00000000),
                             Image(), 1.000f, Colour (0x00000000),
                             Image(), 1.000f, Colour (0x00000000));
+    addAndMakeVisible (whiteTakesBlackButton = new ImageButton ("whiteTakesBlack button"));
+    whiteTakesBlackButton->setButtonText (TRANS("whiteTakesBlack piece"));
+    whiteTakesBlackButton->addListener (this);
+
+    whiteTakesBlackButton->setImages (false, true, true,
+                                      Image(), 1.000f, Colour (0x00000000),
+                                      Image(), 1.000f, Colour (0x00000000),
+                                      Image(), 1.000f, Colour (0x00000000));
+    addAndMakeVisible (blackTakesWhiteButton = new ImageButton ("blackTakesWhite button"));
+    blackTakesWhiteButton->setButtonText (TRANS("blackTakesWhite piece"));
+    blackTakesWhiteButton->addListener (this);
+
+    blackTakesWhiteButton->setImages (false, true, true,
+                                      Image(), 1.000f, Colour (0x00000000),
+                                      Image(), 1.000f, Colour (0x00000000),
+                                      Image(), 1.000f, Colour (0x00000000));
     drawable1 = Drawable::createFromImageData (BinaryData::human_png, BinaryData::human_pngSize);
     drawable2 = Drawable::createFromImageData (BinaryData::rpi_png, BinaryData::rpi_pngSize);
 
@@ -125,6 +141,8 @@ GamePage::~GamePage()
     whitePieceButton = nullptr;
     blackPieceButton = nullptr;
     boardButton = nullptr;
+    whiteTakesBlackButton = nullptr;
+    blackTakesWhiteButton = nullptr;
     drawable1 = nullptr;
     drawable2 = nullptr;
 
@@ -200,6 +218,8 @@ void GamePage::resized()
     whitePieceButton->setBounds (proportionOfWidth (0.1962f), proportionOfHeight (0.1120f), proportionOfWidth (0.1500f), proportionOfHeight (0.2364f));
     blackPieceButton->setBounds (proportionOfWidth (0.1967f), proportionOfHeight (0.5474f), proportionOfWidth (0.1500f), proportionOfHeight (0.2302f));
     boardButton->setBounds (proportionOfWidth (0.9243f), proportionOfHeight (0.8958f), proportionOfWidth (0.0669f), proportionOfHeight (0.0933f));
+    whiteTakesBlackButton->setBounds (proportionOfWidth (0.2203f), proportionOfHeight (0.2613f), proportionOfWidth (0.0983f), proportionOfHeight (0.1431f));
+    blackTakesWhiteButton->setBounds (proportionOfWidth (0.2203f), proportionOfHeight (0.6905f), proportionOfWidth (0.0983f), proportionOfHeight (0.1431f));
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -234,6 +254,16 @@ void GamePage::buttonClicked (Button* buttonThatWasClicked)
          this->gameListener->showBoard(&board);
         //[/UserButtonCode_boardButton]
     }
+    else if (buttonThatWasClicked == whiteTakesBlackButton)
+    {
+        //[UserButtonCode_whiteTakesBlackButton] -- add your button handler code here..
+        //[/UserButtonCode_whiteTakesBlackButton]
+    }
+    else if (buttonThatWasClicked == blackTakesWhiteButton)
+    {
+        //[UserButtonCode_blackTakesWhiteButton] -- add your button handler code here..
+        //[/UserButtonCode_blackTakesWhiteButton]
+    }
 
     //[UserbuttonClicked_Post]
     //[/UserbuttonClicked_Post]
@@ -249,7 +279,7 @@ bool GamePage::keyPressed (const KeyPress& key)
     }
 
     int moveLength = playerCurrentMove.length();
-    printf("Key press : %i / move length : %i \n", key.getKeyCode(), moveLength);    
+    printf("Key press : %i / move length : %i \n", key.getKeyCode(), moveLength);
 
     if (key.getKeyCode() == 8) {
         if (moveLength > 0) {
@@ -297,13 +327,15 @@ bool GamePage::keyPressed (const KeyPress& key)
             stockfish->cancelLastMove();
             playerCurrentMove.clear();
             displayPlayerCurrentMove();
-            showCurrentMovingPiece(realPlayerColor, playerCurrentMove);
+            cleanPieceImages(realPlayerColor);
             // move error mus be called here (not before)
             this->setMoveError(true);
             this->repaint();
         } else {
             // Every thing is fine :)
+            showEventualTakenPiece(currentPlayerColor, playerCurrentMove);
             board.move(playerCurrentMove);
+
 
 //            printf("=PLAYER===================\n");
 //            board.display();
@@ -311,7 +343,7 @@ bool GamePage::keyPressed (const KeyPress& key)
 
             // now computer must play
             currentPlayerColor = currentPlayerColor == WHITE ? BLACK : WHITE;
-            this->showCurrentMovingPiece(currentPlayerColor, "");
+            this->cleanPieceImages(currentPlayerColor);
             stockfish->startSearchingBestMove();
             (*computerMoveOld)->setText((*computerMove)->getText(), dontSendNotification);
             repaint();
@@ -348,13 +380,11 @@ void GamePage::timerCallback() {
             (*computerMove)->setText(bestMove.toLowerCase(), dontSendNotification);
 
             showCurrentMovingPiece(currentPlayerColor, bestMove.substring(0,2));
+            showEventualTakenPiece(currentPlayerColor, bestMove);
 
             stockfish->addMove(bestMove);
             board.move(bestMove);
 
-//            printf("=COMPUTER===================\n");
-//            board.display();
-//            printf("====================\n");
             currentPlayerColor = currentPlayerColor == WHITE ? BLACK : WHITE;
             repaint();
 
@@ -376,6 +406,52 @@ void GamePage::setMoveError(bool error) {
         repaint();
     }
     this->moveError = error;
+}
+
+
+
+void GamePage::cleanPieceImages(Color color) {
+    ScopedPointer<ImageButton> *imageToUpdate, *imageToUpdate2;
+    if (color == WHITE) {
+        imageToUpdate = &whitePieceButton;
+        imageToUpdate2 = &whiteTakesBlackButton;
+    } else {
+        imageToUpdate = &blackPieceButton;
+        imageToUpdate2 = &whiteTakesBlackButton;
+    }
+    (*imageToUpdate)->setImages (false, true, true,
+                    Image(), 1.000f, Colour (0x00000000),
+                    Image(), 1.000f, Colour (0x00000000),
+                    Image(), 1.000f, Colour (0x00000000));
+    (*imageToUpdate2)->setImages (false, true, true,
+                    Image(), 1.000f, Colour (0x00000000),
+                    Image(), 1.000f, Colour (0x00000000),
+                    Image(), 1.000f, Colour (0x00000000));
+
+}
+
+void GamePage::showEventualTakenPiece(Color color, String move) {
+    ScopedPointer<ImageButton> *imageToUpdate;
+
+    if (color == WHITE) {
+        imageToUpdate = &whiteTakesBlackButton;
+    } else {
+        imageToUpdate = &blackTakesWhiteButton;
+    }
+
+    if (move.length() == 4) {
+        // Do we take a piece??
+
+        Image movingPiece = board.getPieceImage(move.substring(2,4));
+        (*imageToUpdate)->setImages (false, true, true,
+                        movingPiece, 0.500f, Colour (0x00000000),
+                        Image(), 1.000f, Colour (0x00000000),
+                        Image(), 1.000f, Colour (0x00000000));
+
+
+    }
+
+    
 }
 
 void GamePage::showCurrentMovingPiece(Color color, String move) {
@@ -553,6 +629,18 @@ BEGIN_JUCER_METADATA
                radioGroupId="0" keepProportions="0" resourceNormal="showBoard_png"
                opacityNormal="1" colourNormal="0" resourceOver="" opacityOver="1"
                colourOver="0" resourceDown="" opacityDown="1" colourDown="0"/>
+  <IMAGEBUTTON name="whiteTakesBlack button" id="96d88a1472cc9d50" memberName="whiteTakesBlackButton"
+               virtualName="" explicitFocusOrder="0" pos="22.026% 26.128% 9.833% 14.308%"
+               buttonText="whiteTakesBlack piece" connectedEdges="0" needsCallback="1"
+               radioGroupId="0" keepProportions="1" resourceNormal="" opacityNormal="1"
+               colourNormal="0" resourceOver="" opacityOver="1" colourOver="0"
+               resourceDown="" opacityDown="1" colourDown="0"/>
+  <IMAGEBUTTON name="blackTakesWhite button" id="33d361b30d19dc35" memberName="blackTakesWhiteButton"
+               virtualName="" explicitFocusOrder="0" pos="22.026% 69.051% 9.833% 14.308%"
+               buttonText="blackTakesWhite piece" connectedEdges="0" needsCallback="1"
+               radioGroupId="0" keepProportions="1" resourceNormal="" opacityNormal="1"
+               colourNormal="0" resourceOver="" opacityOver="1" colourOver="0"
+               resourceDown="" opacityDown="1" colourDown="0"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

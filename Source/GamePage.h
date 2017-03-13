@@ -74,6 +74,8 @@ private:
     String playerCurrentMove;
     ChessBoard board;
     void showCurrentMovingPiece(Color color, String move);
+    void showEventualTakenPiece(Color color, String move);
+    void cleanPieceImages(Color color);
     void setMoveError(bool error);
     void displayPlayerCurrentMove();
     bool moveError;
@@ -95,6 +97,8 @@ private:
     ScopedPointer<ImageButton> whitePieceButton;
     ScopedPointer<ImageButton> blackPieceButton;
     ScopedPointer<ImageButton> boardButton;
+    ScopedPointer<ImageButton> whiteTakesBlackButton;
+    ScopedPointer<ImageButton> blackTakesWhiteButton;
     ScopedPointer<Drawable> drawable1;
     ScopedPointer<Drawable> drawable2;
 
