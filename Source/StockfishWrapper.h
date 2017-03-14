@@ -62,6 +62,8 @@ class StockfishWrapper {
         void cancelLastMove();
         void startLookingFor(String move);
         String getLookForString();
+        void setStartingFen(String startingFen);
+        String getStartingFen();
     private:
         String getAllMoves();
         Variant variant;
@@ -76,8 +78,8 @@ class StockfishWrapper {
         CriticalSection lookForFoundCriticalSection;
         bool isLookForFound;
         String lookForString;
-
         LookFor* lookForThread;
+        String startingFen;
 };
 
 

@@ -159,14 +159,14 @@ void GameSetup::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    whiteButton->setBounds (proportionOfWidth (0.3304f), proportionOfHeight (0.6594f), proportionOfWidth (0.1013f), proportionOfHeight (0.1516f));
-    blackButton->setBounds (proportionOfWidth (0.5270f), proportionOfHeight (0.6594f), proportionOfWidth (0.1013f), proportionOfHeight (0.1516f));
-    playButton->setBounds (proportionOfWidth (0.7827f), proportionOfHeight (0.7652f), proportionOfWidth (0.1677f), proportionOfHeight (0.1975f));
-    slider->setBounds (proportionOfWidth (0.0433f), proportionOfHeight (0.4790f), proportionOfWidth (0.9263f), proportionOfHeight (0.0933f));
+    whiteButton->setBounds (proportionOfWidth (0.3422f), proportionOfHeight (0.6781f), proportionOfWidth (0.1500f), proportionOfHeight (0.2000f));
+    blackButton->setBounds (proportionOfWidth (0.5388f), proportionOfHeight (0.6781f), proportionOfWidth (0.1500f), proportionOfHeight (0.2000f));
+    playButton->setBounds (proportionOfWidth (0.7866f), proportionOfHeight (0.7403f), proportionOfWidth (0.1677f), proportionOfHeight (0.1975f));
+    slider->setBounds (proportionOfWidth (0.0433f), proportionOfHeight (0.5163f), proportionOfWidth (0.9263f), proportionOfHeight (0.0933f));
     title->setBounds (proportionOfWidth (0.2596f), proportionOfHeight (0.0000f), proportionOfWidth (0.4877f), proportionOfHeight (0.2240f));
-    vChess->setBounds (proportionOfWidth (0.2871f), proportionOfHeight (0.2551f), proportionOfWidth (0.1023f), proportionOfHeight (0.1555f));
-    vRacingKings->setBounds (proportionOfWidth (0.4680f), proportionOfHeight (0.2551f), proportionOfWidth (0.1023f), proportionOfHeight (0.1555f));
-    vAtomic->setBounds (proportionOfWidth (0.6450f), proportionOfHeight (0.2613f), proportionOfWidth (0.1023f), proportionOfHeight (0.1555f));
+    vChess->setBounds (proportionOfWidth (0.2871f), proportionOfHeight (0.2551f), proportionOfWidth (0.1500f), proportionOfHeight (0.2000f));
+    vRacingKings->setBounds (proportionOfWidth (0.4680f), proportionOfHeight (0.2551f), proportionOfWidth (0.1500f), proportionOfHeight (0.2000f));
+    vAtomic->setBounds (proportionOfWidth (0.6450f), proportionOfHeight (0.2613f), proportionOfWidth (0.1500f), proportionOfHeight (0.2000f));
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -267,27 +267,27 @@ BEGIN_JUCER_METADATA
   </METHODS>
   <BACKGROUND backgroundColour="ff90ddd5"/>
   <IMAGEBUTTON name="white button" id="4b1de836899aead5" memberName="whiteButton"
-               virtualName="" explicitFocusOrder="0" pos="33.038% 65.941% 10.128% 15.163%"
+               virtualName="" explicitFocusOrder="0" pos="34.218% 67.807% 14.995% 19.984%"
                buttonText="white button" connectedEdges="2" needsCallback="1"
                radioGroupId="2" keepProportions="1" resourceNormal="white_png"
                opacityNormal="1" colourNormal="0" resourceOver="" opacityOver="1"
                colourOver="0" resourceDown="whiteChecked_png" opacityDown="1"
                colourDown="0"/>
   <IMAGEBUTTON name="black button" id="8f9802a005f0b62" memberName="blackButton"
-               virtualName="" explicitFocusOrder="1" pos="52.704% 65.941% 10.128% 15.163%"
+               virtualName="" explicitFocusOrder="1" pos="53.884% 67.807% 14.995% 19.984%"
                buttonText="black button" connectedEdges="1" needsCallback="1"
                radioGroupId="2" keepProportions="1" resourceNormal="black_png"
                opacityNormal="1" colourNormal="0" resourceOver="" opacityOver="1"
                colourOver="0" resourceDown="blackChecked_png" opacityDown="1"
                colourDown="0"/>
   <IMAGEBUTTON name="play button" id="e2925e0313306aa3" memberName="playButton"
-               virtualName="" explicitFocusOrder="0" pos="78.269% 76.516% 16.765% 19.751%"
+               virtualName="" explicitFocusOrder="0" pos="78.663% 74.028% 16.765% 19.751%"
                buttonText="PLAY" connectedEdges="0" needsCallback="1" radioGroupId="0"
                keepProportions="1" resourceNormal="start_png" opacityNormal="1"
                colourNormal="0" resourceOver="" opacityOver="1" colourOver="0"
                resourceDown="" opacityDown="1" colourDown="0"/>
   <SLIDER name="new slider" id="f78f4afb51257937" memberName="slider" virtualName=""
-          explicitFocusOrder="0" pos="4.326% 47.9% 92.625% 9.331%" min="0"
+          explicitFocusOrder="0" pos="4.326% 51.633% 92.625% 9.331%" min="0"
           max="20" int="1" style="LinearHorizontal" textBoxPos="TextBoxAbove"
           textBoxEditable="0" textBoxWidth="80" textBoxHeight="40" skewFactor="1"
           needsCallback="1"/>
@@ -297,21 +297,21 @@ BEGIN_JUCER_METADATA
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="OpenDyslexicAlta"
          fontsize="120" bold="1" italic="0" justification="12"/>
   <IMAGEBUTTON name="vChess button" id="472079481fd546a5" memberName="vChess"
-               virtualName="" explicitFocusOrder="0" pos="28.712% 25.505% 10.226% 15.552%"
+               virtualName="" explicitFocusOrder="0" pos="28.712% 25.505% 14.995% 19.984%"
                buttonText="vChess button" connectedEdges="2" needsCallback="1"
                radioGroupId="1" keepProportions="1" resourceNormal="vChess_png"
                opacityNormal="0.40000000596046447754" colourNormal="0" resourceOver=""
                opacityOver="1" colourOver="0" resourceDown="" opacityDown="1"
                colourDown="ffffffff"/>
   <IMAGEBUTTON name="vRacingKings button" id="e3540ffb805f3e3c" memberName="vRacingKings"
-               virtualName="" explicitFocusOrder="0" pos="46.804% 25.505% 10.226% 15.552%"
+               virtualName="" explicitFocusOrder="0" pos="46.804% 25.505% 14.995% 19.984%"
                buttonText="vRacingKings button" connectedEdges="2" needsCallback="1"
                radioGroupId="1" keepProportions="1" resourceNormal="vRacingKings_png"
                opacityNormal="0.40000000596046447754" colourNormal="0" resourceOver=""
                opacityOver="1" colourOver="0" resourceDown="" opacityDown="1"
                colourDown="ffffffff"/>
   <IMAGEBUTTON name="vAtomic button" id="74ebb4e00376a7a5" memberName="vAtomic"
-               virtualName="" explicitFocusOrder="0" pos="64.503% 26.128% 10.226% 15.552%"
+               virtualName="" explicitFocusOrder="0" pos="64.503% 26.128% 14.995% 19.984%"
                buttonText="vAtomic button" connectedEdges="2" needsCallback="1"
                radioGroupId="1" keepProportions="1" resourceNormal="vAtomic_png"
                opacityNormal="0.40000000596046447754" colourNormal="0" resourceOver=""

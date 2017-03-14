@@ -17,13 +17,11 @@
   ==============================================================================
 */
 
-#ifndef __JUCE_HEADER_E4DE0C7D386BE276__
-#define __JUCE_HEADER_E4DE0C7D386BE276__
+#ifndef __JUCE_HEADER_A05DEF7A48721E7E__
+#define __JUCE_HEADER_A05DEF7A48721E7E__
 
 //[Headers]     -- You can add your own extra header files here --
 #include "../JuceLibraryCode/JuceHeader.h"
-#include "GameListener.h"
-#include "ChessBoard.h"
 //[/Headers]
 
 
@@ -36,45 +34,41 @@
     Describe your class and how it works here!
                                                                     //[/Comments]
 */
-class BoardComponent  : public Component,
-                        public ButtonListener
+class PawnPromotion  : public Component,
+                       public ButtonListener
 {
 public:
     //==============================================================================
-    BoardComponent ();
-    ~BoardComponent();
+    PawnPromotion ();
+    ~PawnPromotion();
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
-    void setGameListener(GameListener *gl);
-    void setChessboard(ChessBoard *chessBoard);
     //[/UserMethods]
 
     void paint (Graphics& g) override;
     void resized() override;
     void buttonClicked (Button* buttonThatWasClicked) override;
-    bool keyPressed (const KeyPress& key) override;
 
 
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
-    GameListener *gameListener;
-    ChessBoard *chessBoard;
-    ScopedPointer<DrawableImage> boardCase[8][8];
-    ScopedPointer<Label> letterLabel[8];
-    ScopedPointer<Label> numberLabel[8];
     //[/UserVariables]
 
     //==============================================================================
-    ScopedPointer<TextButton> closeButton;
+    ScopedPointer<ImageButton> queenButton;
+    ScopedPointer<ImageButton> rockButton;
+    ScopedPointer<ImageButton> bishopButton;
+    ScopedPointer<ImageButton> knightButton;
+    ScopedPointer<Label> promotionLabel;
 
 
     //==============================================================================
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (BoardComponent)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PawnPromotion)
 };
 
 //[EndFile] You can add extra defines here...
 //[/EndFile]
 
-#endif   // __JUCE_HEADER_E4DE0C7D386BE276__
+#endif   // __JUCE_HEADER_A05DEF7A48721E7E__

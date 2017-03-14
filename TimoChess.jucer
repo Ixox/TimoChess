@@ -33,6 +33,9 @@
       <FILE id="aa1rEp" name="GameSetup.cpp" compile="1" resource="0" file="Source/GameSetup.cpp"/>
       <FILE id="QASJuc" name="GameSetup.h" compile="0" resource="0" file="Source/GameSetup.h"/>
       <FILE id="LVmt2A" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>
+      <FILE id="pqwLqo" name="PawnPromotion.cpp" compile="1" resource="0"
+            file="Source/PawnPromotion.cpp"/>
+      <FILE id="z0fiFy" name="PawnPromotion.h" compile="0" resource="0" file="Source/PawnPromotion.h"/>
       <FILE id="LDN8kF" name="StockfishWrapper.cpp" compile="1" resource="0"
             file="Source/StockfishWrapper.cpp"/>
       <FILE id="X4z9IG" name="StockfishWrapper.h" compile="0" resource="0"

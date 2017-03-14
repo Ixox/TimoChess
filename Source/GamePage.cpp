@@ -159,25 +159,25 @@ void GamePage::paint (Graphics& g)
 
     g.fillAll (Colour (0xff90c9dd));
 
-    g.setGradientFill (ColourGradient (Colours::white,
-                                       static_cast<float> (proportionOfWidth (0.1927f)), static_cast<float> (proportionOfHeight (0.1680f)),
+    g.setGradientFill (ColourGradient (Colour (0xe0ffffff),
+                                       static_cast<float> (proportionOfWidth (0.5113f)), static_cast<float> (proportionOfHeight (0.0560f)),
                                        Colour (0x00008000),
-                                       static_cast<float> (proportionOfWidth (0.3579f)), static_cast<float> (proportionOfHeight (0.4106f)),
+                                       static_cast<float> (proportionOfWidth (0.5113f)), static_cast<float> (proportionOfHeight (0.0995f)),
                                        false));
-    g.fillRoundedRectangle (static_cast<float> (proportionOfWidth (0.1942f)), static_cast<float> (proportionOfHeight (0.0596f)), static_cast<float> (proportionOfWidth (0.7237f)), static_cast<float> (proportionOfHeight (0.3499f)), 10.000f);
+    g.fillRoundedRectangle (static_cast<float> (proportionOfWidth (0.1942f)), static_cast<float> (proportionOfHeight (0.0599f)), static_cast<float> (proportionOfWidth (0.7700f)), static_cast<float> (proportionOfHeight (0.3499f)), 10.000f);
 
     g.setColour (Colours::white);
-    g.drawRoundedRectangle (static_cast<float> (proportionOfWidth (0.1942f)), static_cast<float> (proportionOfHeight (0.0596f)), static_cast<float> (proportionOfWidth (0.7237f)), static_cast<float> (proportionOfHeight (0.3499f)), 10.000f, 5.000f);
+    g.drawRoundedRectangle (static_cast<float> (proportionOfWidth (0.1942f)), static_cast<float> (proportionOfHeight (0.0599f)), static_cast<float> (proportionOfWidth (0.7700f)), static_cast<float> (proportionOfHeight (0.3499f)), 10.000f, 5.000f);
 
-    g.setGradientFill (ColourGradient (Colours::black,
-                                       static_cast<float> (proportionOfWidth (0.1967f)), static_cast<float> (proportionOfHeight (0.5972f)),
+    g.setGradientFill (ColourGradient (Colour (0xc0000000),
+                                       static_cast<float> (proportionOfWidth (0.5113f)), static_cast<float> (proportionOfHeight (0.4852f)),
                                        Colour (0x00008000),
-                                       static_cast<float> (proportionOfWidth (0.3383f)), static_cast<float> (proportionOfHeight (0.8398f)),
+                                       static_cast<float> (proportionOfWidth (0.5113f)), static_cast<float> (proportionOfHeight (0.5288f)),
                                        false));
-    g.fillRoundedRectangle (static_cast<float> (proportionOfWidth (0.1942f)), static_cast<float> (proportionOfHeight (0.4897f)), static_cast<float> (proportionOfWidth (0.7237f)), static_cast<float> (proportionOfHeight (0.3499f)), 10.000f);
+    g.fillRoundedRectangle (static_cast<float> (proportionOfWidth (0.1942f)), static_cast<float> (proportionOfHeight (0.4897f)), static_cast<float> (proportionOfWidth (0.7700f)), static_cast<float> (proportionOfHeight (0.3499f)), 10.000f);
 
     g.setColour (Colours::black);
-    g.drawRoundedRectangle (static_cast<float> (proportionOfWidth (0.1942f)), static_cast<float> (proportionOfHeight (0.4897f)), static_cast<float> (proportionOfWidth (0.7237f)), static_cast<float> (proportionOfHeight (0.3499f)), 10.000f, 5.000f);
+    g.drawRoundedRectangle (static_cast<float> (proportionOfWidth (0.1942f)), static_cast<float> (proportionOfHeight (0.4897f)), static_cast<float> (proportionOfWidth (0.7700f)), static_cast<float> (proportionOfHeight (0.3499f)), 10.000f, 5.000f);
 
     g.setColour (Colours::black);
     jassert (drawable1 != 0);
@@ -211,15 +211,15 @@ void GamePage::resized()
     //[/UserPreResize]
 
     resetButton->setBounds (proportionOfWidth (0.0039f), proportionOfHeight (0.9946f) - proportionOfHeight (0.0863f), proportionOfWidth (0.0683f), proportionOfHeight (0.0863f));
-    whiteMove->setBounds (proportionOfWidth (0.3461f), proportionOfHeight (0.0622f), proportionOfWidth (0.3702f), proportionOfHeight (0.3484f));
-    blackMove->setBounds (proportionOfWidth (0.3461f), proportionOfHeight (0.4915f), proportionOfWidth (0.3702f), proportionOfHeight (0.3484f));
-    whiteMoveOld->setBounds (proportionOfWidth (0.7360f), proportionOfHeight (0.1431f), proportionOfWidth (0.1799f), proportionOfHeight (0.1967f));
-    blackMoveOld->setBounds (proportionOfWidth (0.7360f), proportionOfHeight (0.5537f), proportionOfWidth (0.1799f), proportionOfHeight (0.2100f));
+    whiteMove->setBounds (proportionOfWidth (0.3579f), proportionOfHeight (0.0622f), proportionOfWidth (0.3702f), proportionOfHeight (0.3422f));
+    blackMove->setBounds (proportionOfWidth (0.3579f), proportionOfHeight (0.4915f), proportionOfWidth (0.3702f), proportionOfHeight (0.3422f));
+    whiteMoveOld->setBounds (proportionOfWidth (0.7802f), proportionOfHeight (0.1431f), proportionOfWidth (0.1799f), proportionOfHeight (0.1967f));
+    blackMoveOld->setBounds (proportionOfWidth (0.7802f), proportionOfHeight (0.5537f), proportionOfWidth (0.1799f), proportionOfHeight (0.2100f));
     whitePieceButton->setBounds (proportionOfWidth (0.1962f), proportionOfHeight (0.1120f), proportionOfWidth (0.1500f), proportionOfHeight (0.2364f));
     blackPieceButton->setBounds (proportionOfWidth (0.1967f), proportionOfHeight (0.5474f), proportionOfWidth (0.1500f), proportionOfHeight (0.2302f));
     boardButton->setBounds (proportionOfWidth (0.9243f), proportionOfHeight (0.8958f), proportionOfWidth (0.0669f), proportionOfHeight (0.0933f));
-    whiteTakesBlackButton->setBounds (proportionOfWidth (0.2203f), proportionOfHeight (0.2613f), proportionOfWidth (0.0983f), proportionOfHeight (0.1431f));
-    blackTakesWhiteButton->setBounds (proportionOfWidth (0.2203f), proportionOfHeight (0.6905f), proportionOfWidth (0.0983f), proportionOfHeight (0.1431f));
+    whiteTakesBlackButton->setBounds (proportionOfWidth (0.2596f), proportionOfHeight (0.2675f), proportionOfWidth (0.0983f), proportionOfHeight (0.1431f));
+    blackTakesWhiteButton->setBounds (proportionOfWidth (0.2596f), proportionOfHeight (0.6967f), proportionOfWidth (0.0983f), proportionOfHeight (0.1431f));
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -314,21 +314,24 @@ bool GamePage::keyPressed (const KeyPress& key)
     if (playerCurrentMove.length() == 4) {
         stockfish->addMove(playerCurrentMove);
         // Check validity
+        printf("Quick move to check validity: bestmove....\n");
         stockfish->startSearchingBestMoveInMillis(50);
         String bestmove = "";
 
         while (bestmove.length() == 0) {
             bestmove = stockfish->checkBestMove();
         }
+        printf("Quick move to check validity: bestmove : %s\n", bestmove.toRawUTF8());
 
         // If stockfish move our color, it means previous move was illegal
-        if (board.getColor(bestmove) == this->currentPlayerColor) {
-//            printf("SOTCKFISH MOVE OUR COLOR, LAST MOVE WAS WRONG !!!!!\n");
+        Color validityTest = board.getColor(bestmove);
+        if (validityTest == this->currentPlayerColor || validityTest == NOCOLOR) {
+            printf("## STOCKFISH MOVE OUR COLOR, LAST MOVE WAS WRONG !!!!!\n");
             stockfish->cancelLastMove();
             playerCurrentMove.clear();
             displayPlayerCurrentMove();
             cleanPieceImages(realPlayerColor);
-            // move error mus be called here (not before)
+            // move error must be called here (not before)
             this->setMoveError(true);
             this->repaint();
         } else {
@@ -390,8 +393,8 @@ void GamePage::timerCallback() {
 
             (*playerMoveOld)->setText(playerCurrentMove, dontSendNotification);
             playerCurrentMove.clear();
-            showCurrentMovingPiece(realPlayerColor, playerCurrentMove);
             displayPlayerCurrentMove();
+            cleanPieceImages(currentPlayerColor);
 
         } else {
             char thinking[5] = {'.', '.', '.', '.', 0};
@@ -417,7 +420,7 @@ void GamePage::cleanPieceImages(Color color) {
         imageToUpdate2 = &whiteTakesBlackButton;
     } else {
         imageToUpdate = &blackPieceButton;
-        imageToUpdate2 = &whiteTakesBlackButton;
+        imageToUpdate2 = &blackTakesWhiteButton;
     }
     (*imageToUpdate)->setImages (false, true, true,
                     Image(), 1.000f, Colour (0x00000000),
@@ -451,7 +454,7 @@ void GamePage::showEventualTakenPiece(Color color, String move) {
 
     }
 
-    
+
 }
 
 void GamePage::showCurrentMovingPiece(Color color, String move) {
@@ -476,8 +479,6 @@ void GamePage::showCurrentMovingPiece(Color color, String move) {
 
     if (move.length() == 2) {
         // Display the piece
-
-
         if (color == this->currentPlayerColor && board.getColor(move) != this->currentPlayerColor) {
             setMoveError(true);
             playerCurrentMove.clear();
@@ -536,11 +537,16 @@ void GamePage::start(Color realPlayerColor) {
     this->showCurrentMovingPiece(WHITE, "");
     this->showCurrentMovingPiece(BLACK, "");
 
-    if (stockfish->getVariant() == RACING_KINGS) {
-        board.initRacingKings();
+    if (this->stockfish->getStartingFen().length() > 0) {
+        board.initWithFen(this->stockfish->getStartingFen());
     } else {
-        board.init();
+        if (stockfish->getVariant() == RACING_KINGS) {
+            board.initRacingKings();
+        } else {
+            board.init();
+        }
     }
+
     playerCurrentMove.clear();
     displayPlayerCurrentMove();
     if (this->realPlayerColor == BLACK) {
@@ -572,9 +578,9 @@ BEGIN_JUCER_METADATA
     <METHOD name="keyPressed (const KeyPress&amp; key)"/>
   </METHODS>
   <BACKGROUND backgroundColour="ff90c9dd">
-    <ROUNDRECT pos="19.42% 5.964% 72.37% 34.992%" cornerSize="10" fill="linear: 19.272% 16.796%, 35.792% 41.058%, 0=ffffffff, 1=8000"
+    <ROUNDRECT pos="19.42% 5.988% 77% 34.992%" cornerSize="10" fill="linear: 51.131% 5.599%, 51.131% 9.953%, 0=e0ffffff, 1=8000"
                hasStroke="1" stroke="5, mitered, butt" strokeColour="solid: ffffffff"/>
-    <ROUNDRECT pos="19.42% 48.966% 72.37% 34.992%" cornerSize="10" fill="linear: 19.666% 59.72%, 33.825% 83.981%, 0=ff000000, 1=8000"
+    <ROUNDRECT pos="19.42% 48.966% 77% 34.992%" cornerSize="10" fill="linear: 51.131% 48.523%, 51.131% 52.877%, 0=c0000000, 1=8000"
                hasStroke="1" stroke="5, mitered, butt" strokeColour="solid: ff000000"/>
     <IMAGE pos="1.377% 12.729% 13.569% 20.84%" resource="BinaryData::human_png"
            opacity="1" mode="1"/>
@@ -588,25 +594,25 @@ BEGIN_JUCER_METADATA
                colourNormal="0" resourceOver="" opacityOver="1" colourOver="0"
                resourceDown="" opacityDown="1" colourDown="0"/>
   <LABEL name="whiteMove label" id="49edb2e62c665264" memberName="whiteMove"
-         virtualName="" explicitFocusOrder="0" pos="34.612% 6.221% 37.021% 34.837%"
+         virtualName="" explicitFocusOrder="0" pos="35.792% 6.221% 37.021% 34.215%"
          textCol="ff266163" edTextCol="ff000000" edBkgCol="0" labelText="C2C4"
          editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
          fontname="OpenDyslexicAlta" fontsize="190" bold="1" italic="0"
          justification="33"/>
   <LABEL name="blackMove label" id="4ee3256afca77a83" memberName="blackMove"
-         virtualName="" explicitFocusOrder="0" pos="34.612% 49.145% 37.021% 34.837%"
+         virtualName="" explicitFocusOrder="0" pos="35.792% 49.145% 37.021% 34.215%"
          textCol="ff266163" edTextCol="ff000000" edBkgCol="0" labelText="E7E5"
          editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
          fontname="OpenDyslexicAlta" fontsize="190" bold="1" italic="0"
          justification="33"/>
   <LABEL name="whiteMoveOld label" id="a1067eed02d5360f" memberName="whiteMoveOld"
-         virtualName="" explicitFocusOrder="0" pos="73.599% 14.308% 17.994% 19.673%"
+         virtualName="" explicitFocusOrder="0" pos="78.024% 14.308% 17.994% 19.673%"
          textCol="ff61a5a8" edTextCol="ff000000" edBkgCol="0" labelText="C2C4&#10;"
          editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
          fontname="OpenDyslexicAlta" fontsize="120" bold="1" italic="0"
          justification="33"/>
   <LABEL name="blackMove label" id="7b9defce5f0efb46" memberName="blackMoveOld"
-         virtualName="" explicitFocusOrder="0" pos="73.599% 55.365% 17.994% 20.995%"
+         virtualName="" explicitFocusOrder="0" pos="78.024% 55.365% 17.994% 20.995%"
          textCol="ff65a4a6" edTextCol="ff000000" edBkgCol="0" labelText="E7E5&#10;"
          editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
          fontname="OpenDyslexicAlta" fontsize="120" bold="1" italic="0"
@@ -630,13 +636,13 @@ BEGIN_JUCER_METADATA
                opacityNormal="1" colourNormal="0" resourceOver="" opacityOver="1"
                colourOver="0" resourceDown="" opacityDown="1" colourDown="0"/>
   <IMAGEBUTTON name="whiteTakesBlack button" id="96d88a1472cc9d50" memberName="whiteTakesBlackButton"
-               virtualName="" explicitFocusOrder="0" pos="22.026% 26.128% 9.833% 14.308%"
+               virtualName="" explicitFocusOrder="0" pos="25.959% 26.75% 9.833% 14.308%"
                buttonText="whiteTakesBlack piece" connectedEdges="0" needsCallback="1"
                radioGroupId="0" keepProportions="1" resourceNormal="" opacityNormal="1"
                colourNormal="0" resourceOver="" opacityOver="1" colourOver="0"
                resourceDown="" opacityDown="1" colourDown="0"/>
   <IMAGEBUTTON name="blackTakesWhite button" id="33d361b30d19dc35" memberName="blackTakesWhiteButton"
-               virtualName="" explicitFocusOrder="0" pos="22.026% 69.051% 9.833% 14.308%"
+               virtualName="" explicitFocusOrder="0" pos="25.959% 69.673% 9.833% 14.308%"
                buttonText="blackTakesWhite piece" connectedEdges="0" needsCallback="1"
                radioGroupId="0" keepProportions="1" resourceNormal="" opacityNormal="1"
                colourNormal="0" resourceOver="" opacityOver="1" colourOver="0"

@@ -69,6 +69,7 @@ OBJECTS := \
   $(JUCE_OBJDIR)/GamePage_c4fe5baa.o \
   $(JUCE_OBJDIR)/GameSetup_5a76d8c.o \
   $(JUCE_OBJDIR)/Main_90ebc5c2.o \
+  $(JUCE_OBJDIR)/PawnPromotion_47e6badc.o \
   $(JUCE_OBJDIR)/StockfishWrapper_578d2e4e.o \
   $(JUCE_OBJDIR)/BinaryData_ce4232d4.o \
   $(JUCE_OBJDIR)/juce_core_75b14332.o \
@@ -122,6 +123,11 @@ $(JUCE_OBJDIR)/GameSetup_5a76d8c.o: ../../Source/GameSetup.cpp
 $(JUCE_OBJDIR)/Main_90ebc5c2.o: ../../Source/Main.cpp
 	-@mkdir -p $(JUCE_OBJDIR)
 	@echo "Compiling Main.cpp"
+	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) -o "$@" -c "$<"
+
+$(JUCE_OBJDIR)/PawnPromotion_47e6badc.o: ../../Source/PawnPromotion.cpp
+	-@mkdir -p $(JUCE_OBJDIR)
+	@echo "Compiling PawnPromotion.cpp"
 	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) -o "$@" -c "$<"
 
 $(JUCE_OBJDIR)/StockfishWrapper_578d2e4e.o: ../../Source/StockfishWrapper.cpp

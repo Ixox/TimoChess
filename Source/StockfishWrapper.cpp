@@ -32,7 +32,7 @@ void LookFor::run() {
     ssize_t read;        
     line = (char*)malloc(1024);
     while ((read = getline(&line, &len, stockfishWrapper->istream)) != -1) {
-        // printf("stockfish > %s", line);
+        printf("SF >> %s", line);
         if (stockfishWrapper->lookForString.length() > 0 && strncmp(line, stockfishWrapper->lookForString.toRawUTF8(), stockfishWrapper->lookForString.length()) == 0) {
             // printf("-- LOOKFOR THREAD : '%s' FOUND !\n", stockfishWrapper->lookForString.toRawUTF8());
             stockfishWrapper->setLookForFound(line, true);
@@ -105,6 +105,7 @@ void StockfishWrapper::initUCI() {
     fprintf(ostream, "uci\n");
     fprintf(ostream, "setoption name Threads value 4\n");
     fprintf(ostream, "setoption name Hash value 128\n");
+    // fprintf(ostream, "setoption name MultiPV value 2\n");
     // fprintf(ostream, "setoption name Minimum Thinking Time value 2000\n");
     startLookingFor("uciok");
     while (!isLookForFound)  { Thread::sleep(100); }
@@ -201,11 +202,17 @@ void StockfishWrapper::startSearchingBestMoveInMillis(int millis) {
     String newPosString = getAllMoves();
 
     if (newPosString.length() >0) {
-        newPosString = " move " + newPosString ;
+        newPosString = " moves " + newPosString ;
     }
         
-    fprintf(ostream, "position startpos %s\n", newPosString.toRawUTF8());
-    printf(">>>> position startpos %s\n", newPosString.toRawUTF8());
+    //printf(">>>>>>>>>>>>>>> this->startingFen size %i :  %s\n", this->startingFen.length(), this->startingFen.toRawUTF8());
+    if (this->startingFen.length() > 0 ) {
+       fprintf(ostream, "position fen \"%s\" %s\n", this->startingFen.toRawUTF8(), newPosString.toRawUTF8());        
+       printf(">>>> position fen \"%s\" %s\n", this->startingFen.toRawUTF8(), newPosString.toRawUTF8());      
+    } else {
+       fprintf(ostream, "position startpos %s\n", newPosString.toRawUTF8());
+       printf(">>>> position startpos %s\n", newPosString.toRawUTF8());
+    }
     
     startLookingFor("bestmove");
     fprintf(ostream, "go  movetime %i\n", millis);
@@ -217,15 +224,21 @@ void StockfishWrapper::startSearchingBestMove()
     String newPosString = getAllMoves();
 
     if (newPosString.length() >0) {
-        newPosString = " move " + newPosString ;
+        newPosString = " moves " + newPosString ;
     }
-        
-    fprintf(ostream, "position startpos %s\n", newPosString.toRawUTF8());
-    printf(">>>> position startpos %s\n", newPosString.toRawUTF8());
+    
+    // printf(">>>>>>>>>>>>>>> this->startingFen size %i :  %s\n", this->startingFen.length(), this->startingFen.toRawUTF8());
+    if (this->startingFen.length() > 0 ) {
+       fprintf(ostream, "position fen \"%s\" %s\n", this->startingFen.toRawUTF8(), newPosString.toRawUTF8());        
+       printf(">>>> position fen \"%s\" %s\n", this->startingFen.toRawUTF8(), newPosString.toRawUTF8());      
+    } else {
+       fprintf(ostream, "position startpos %s\n", newPosString.toRawUTF8());
+       printf(">>>> position startpos %s\n", newPosString.toRawUTF8());
+    }
     
     startLookingFor("bestmove");
     fprintf(ostream, "go  \n");
-    printf("<<<< go \n");
+    printf(">>>>> go \n");
 }
 
 
@@ -294,5 +307,14 @@ void StockfishWrapper::clean() {
     moves.deleteAll();
     fclose(istream);    
     fclose(ostream);    
+}
+
+
+void StockfishWrapper::setStartingFen(String startingFen) {
+    this->startingFen = startingFen;    
+}
+
+String StockfishWrapper::getStartingFen() {
+    return this->startingFen;    
 }
 

@@ -68,6 +68,94 @@ void ChessBoard::initRacingKings() {
     }
 }
 
+void ChessBoard::initWithFen(String fenFull) {
+    // String fenFull = "5r2/q5P1/8/8/8/3R4/1R6/6Q1 w - - 0 1"; 
+    StringArray tokens;
+    tokens.addTokens (fenFull, " ", "\"");
+
+    String fen = tokens[0];
+    StringArray rows;
+    rows.addTokens (fen, "/", "\"");
+    // Clean board
+    for (int l = 0; l <8 ; l++) {
+        for (int n=0 ; n < 8; n++) {
+            board[l][n].color = NOCOLOR;
+            board[l][n].piece = NOPIECE;            
+        }
+    }
+    
+    for (int n=0; n< rows.size(); n++) {
+        String row = rows[n];
+        int l = 0;
+        for (int c = 0; c < row.length(); c++ ) {
+            switch (row[c]) {
+                case '1' ... '8' :
+                    l +=  (row[c] - '0');
+                    break;
+                case 'k':
+                    board[l][7-n].color = BLACK;
+                    board[l][7-n].piece = KING;
+                    l++;
+                    break;
+                case 'q':
+                    board[l][7-n].color = BLACK;
+                    board[l][7-n].piece = QUEEN;
+                    l++;
+                    break;
+                case 'r':
+                    board[l][7-n].color = BLACK;
+                    board[l][7-n].piece = ROCK;
+                    l++;
+                    break;
+                case 'b':
+                    board[l][7-n].color = BLACK;
+                    board[l][7-n].piece = BISHOP;
+                    l++;
+                    break;
+                case 'n':
+                    board[l][7-n].color = BLACK;
+                    board[l][7-n].piece = KNIGHT;
+                    l++;
+                    break;
+                case 'p':
+                    board[l][7-n].color = BLACK;
+                    board[l][7-n].piece = PAWN;
+                    l++;
+                    break;
+                case 'K':
+                    board[l][7-n].color = WHITE;
+                    board[l][7-n].piece = KING;
+                    l++;
+                    break;
+                case 'Q':
+                    board[l][7-n].color = WHITE;
+                    board[l][7-n].piece = QUEEN;
+                    l++;
+                    break;
+                case 'R':
+                    board[l][7-n].color = WHITE;
+                    board[l][7-n].piece =ROCK;
+                    l++;
+                    break;
+                case 'B':
+                    board[l][7-n].color = WHITE;
+                    board[l][7-n].piece = BISHOP;
+                    l++;
+                    break;
+                case 'N':
+                    board[l][7-n].color = WHITE;
+                    board[l][7-n].piece = KNIGHT;
+                    l++;
+                    break;
+                case 'P':
+                    board[l][7-n].color = WHITE;
+                    board[l][7-n].piece = PAWN;
+                    l++;
+                    break;                    
+            }
+        }
+    }
+}
 
 bool ChessBoard::move(String move) {    
     int rowSource = move.toRawUTF8()[0] - 'a';

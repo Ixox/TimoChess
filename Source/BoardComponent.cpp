@@ -40,6 +40,24 @@ BoardComponent::BoardComponent ()
 
     //[UserPreSize]
     for (int l = 0 ; l < 8; l++) {
+       
+        const char letter[2] = { (char)('A' + l), 0};
+        const char number[2] = { (char)('1' + l), 0 };
+
+        addAndMakeVisible (numberLabel[l] = new Label("Number" + (char)('1'+ l), number));
+        numberLabel[l]->setFont (Font ("OpenDyslexicAlta", 50.00f, Font::bold));
+        numberLabel[l]->setJustificationType (Justification::centredTop);
+        numberLabel[l]->setEditable (false, false, false);
+        numberLabel[l]->setColour (Label::textColourId, Colour (0xffffffff));
+        numberLabel[l]->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
+
+        addAndMakeVisible (letterLabel[l] = new Label("Letter" + (char)('A'+ l), letter));
+        letterLabel[l]->setFont (Font ("OpenDyslexicAlta", 50.00f, Font::bold));
+        letterLabel[l]->setJustificationType (Justification::centredTop);
+        letterLabel[l]->setEditable (false, false, false);
+        letterLabel[l]->setColour (Label::textColourId, Colour (0xffffffff));
+        letterLabel[l]->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
+
         for (int n = 0; n < 8; n++) {
 //            addAndMakeVisible(boardCase[l][n] = new DrawableImage());
             boardCase[l][n] = new DrawableImage();
@@ -64,6 +82,8 @@ BoardComponent::~BoardComponent()
 
     //[Destructor]. You can add your own custom destruction code here..
     for (int l= 0 ; l < 8; l++) {
+        letterLabel[l] = nullptr;
+        numberLabel[l] = nullptr;
         for (int n = 0; n < 8; n++) {
             boardCase[l][n] = nullptr;
         }
@@ -80,6 +100,9 @@ void BoardComponent::paint (Graphics& g)
     g.fillAll (Colour (0xff1f5557));
 
     //[UserPaint] Add your own custom painting code here..
+
+    float caseHeight = .1125f;
+    float caseWidth = .08f;
     for (int l= 0 ; l < 8; l++) {
         for (int n = 0; n < 8; n++) {
             if (((l+n) & 0x1) == 0) {
@@ -87,14 +110,13 @@ void BoardComponent::paint (Graphics& g)
             } else {
                 g.setColour(Colours::grey);
             }
-            g.fillRoundedRectangle (Rectangle<float> (proportionOfWidth (l * .075f + .2f), proportionOfHeight (n * .1f + .1f), proportionOfWidth (0.075f), proportionOfHeight (0.1f)), 2.000f);
+            g.fillRoundedRectangle (Rectangle<float> (proportionOfWidth (l *  caseWidth + .12f), proportionOfHeight (.02f + n * caseHeight ), proportionOfWidth ( caseWidth), proportionOfHeight (caseHeight)), 2.000f);
         }
     }
     for (int l= 0 ; l < 8; l++) {
         for (int n = 0; n < 8; n++) {
             if (chessBoard != NULL) {
-//                boardCase[l][n]->setTransformToFit(Rectangle<float>(proportionOfWidth (l * .1f + .1f), proportionOfHeight (n * .1f + .1f), proportionOfWidth (0.1f), proportionOfHeight (0.1f)), RectanglePlacement());
-                boardCase[l][n]->drawWithin (g, Rectangle<float> (proportionOfWidth (l * .075f + .2f), proportionOfHeight (0.8f - n * .1f ), proportionOfWidth (0.075f), proportionOfHeight (0.1f)),
+                boardCase[l][n]->drawWithin (g, Rectangle<float> (proportionOfWidth (l *  caseWidth + .12f), proportionOfHeight (.02f + (7.0f * caseHeight) - caseHeight *  n ), proportionOfWidth ( caseWidth), proportionOfHeight (caseHeight)),
                                RectanglePlacement::centred, 1.000f);
             }
         }
@@ -105,11 +127,13 @@ void BoardComponent::paint (Graphics& g)
 void BoardComponent::resized()
 {
     //[UserPreResize] Add your own custom resize code here..
+    float caseHeight = .1125f;
+    float caseWidth = .08f;
+    for (int n = 0; n < 8; n++) {
+        numberLabel[n]->setBounds(proportionOfWidth (.048f), proportionOfHeight (.03f + (7.0f * caseHeight) - caseHeight *  n ), proportionOfWidth (caseWidth), proportionOfHeight (caseHeight));
+    }
     for (int l= 0 ; l < 8; l++) {
-        for (int n = 0; n < 8; n++) {
-         //   boardCase[l][n]->setBoundingBox(RelativeParallelogram());
-//            boardCase[l][n]->setBounds(proportionOfWidth (l * .1f + .1f), proportionOfHeight (n * .1f + .1f), proportionOfWidth (0.1f), proportionOfHeight (0.1f));
-        }
+        letterLabel[l]->setBounds(proportionOfWidth (l *  caseWidth + .12f), proportionOfHeight (.905f ), proportionOfWidth ( caseWidth), proportionOfHeight (caseHeight));
     }
     //[/UserPreResize]
 

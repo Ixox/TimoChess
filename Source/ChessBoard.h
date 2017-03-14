@@ -44,6 +44,8 @@ class ChessBoard {
         ChessBoard();
         void init();
         void initRacingKings();
+        void initWithFen(String fenFull);
+
         bool move(String move);
         Color getColor(String pos);
         Piece getPiece(String pos);
