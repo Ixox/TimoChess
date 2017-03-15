@@ -16,9 +16,7 @@
 #include <sys/time.h>
 
 #include "../JuceLibraryCode/JuceHeader.h"
-
 #include "StockfishWrapper.h"
-
 
 /*
   ==============================================================================
@@ -245,15 +243,15 @@ void StockfishWrapper::startSearchingBestMove()
 String StockfishWrapper::checkBestMove() {
     String bestMoveLine = this->getLookForString();
     if (bestMoveLine.length() > 0) {
-        printf(">>>> bestMoveLine.length : %s\n", bestMoveLine.toRawUTF8());
-        String bm = bestMoveLine.substring(9,13);
+        StringArray strings;
+        strings.addTokens (bestMoveLine, " ", "\"");
+        String bm = strings[1];
         printf(">>>> BESTMOVE : %s\n", bm.toRawUTF8());
         return bm;
     }
     return "";
     
 }
-
 
 
 void StockfishWrapper::cancelLastMove() {

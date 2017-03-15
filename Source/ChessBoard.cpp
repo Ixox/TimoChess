@@ -158,12 +158,12 @@ void ChessBoard::initWithFen(String fenFull) {
 }
 
 bool ChessBoard::move(String move) {    
-    int rowSource = move.toRawUTF8()[0] - 'a';
-    if (rowSource < 0 || rowSource >7) {
+    int letter = move.toRawUTF8()[0] - 'a';
+    if (letter < 0 || letter >7) {
         return false;
     }
-    int colSource = move.toRawUTF8()[1] - '1';
-    if (colSource < 0 || colSource >7) {
+    int number = move.toRawUTF8()[1] - '1';
+    if (number < 0 || number >7) {
         return false;
     }
     
@@ -176,37 +176,37 @@ bool ChessBoard::move(String move) {
         return false;
     }
 //    printf("* * * * * * * ");
-//    printf(" * * * * * * Move from %i, %i TO %i, %i\n", rowSource, colSource, rowDest, colDest);
-    board[rowDest][colDest].color = board[rowSource][colSource].color;
-    board[rowDest][colDest].piece = board[rowSource][colSource].piece ;
-    board[rowSource][colSource].color = NOCOLOR;
-    board[rowSource][colSource].piece = NOPIECE;
+//    printf(" * * * * * * Move from %i, %i TO %i, %i\n", letter, number, rowDest, colDest);
+    board[rowDest][colDest].color = board[letter][number].color;
+    board[rowDest][colDest].piece = board[letter][number].piece ;
+    board[letter][number].color = NOCOLOR;
+    board[letter][number].piece = NOPIECE;
     return true;
 }
 
 Piece ChessBoard::getPiece(String pos) {
-    int rowSource = pos[0] - 'a';
-    if (rowSource < 0 || rowSource >7) {
+    int letter = pos[0] - 'a';
+    if (letter < 0 || letter >7) {
         return NOPIECE;
     }
-    int colSource = pos[1] - '1';
-    if (colSource < 0 || colSource >7) {
+    int number = pos[1] - '1';
+    if (number < 0 || number >7) {
         return NOPIECE;
     }
-    return board[rowSource][colSource].piece;
+    return board[letter][number].piece;
     
 }
 
 Color ChessBoard::getColor(String pos) {
-    int rowSource = pos[0] - 'a';
-    if (rowSource < 0 || rowSource >7) {
+    int letter = pos[0] - 'a';
+    if (letter < 0 || letter >7) {
         return NOCOLOR;
     }
-    int colSource = pos[1] - '1';
-    if (colSource < 0 || colSource >7) {
+    int number = pos[1] - '1';
+    if (number < 0 || number >7) {
         return NOCOLOR;
     }
-    return board[rowSource][colSource].color;
+    return board[letter][number].color;
     
 }
 
@@ -273,6 +273,19 @@ Image ChessBoard::getPieceImage(int l, int n) {
     return movingPiece;
 
 }
+
+void ChessBoard::promotePawnTo(String move, Piece promotion) {
+    int letter = move[0] - 'a';
+    int number = move[1] - '1';
+    if ( letter >= 0 && letter <=7 && number >=0 && number <= 7) {
+        if (board[letter][number].piece == PAWN) {
+            board[letter][number].piece = promotion;
+            return;
+        }
+    }
+    printf("### ERROR : cannot promote pawn from move %s \n", move.toRawUTF8());
+}
+
 
 
 void ChessBoard::display() {       

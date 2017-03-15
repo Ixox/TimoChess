@@ -12,6 +12,7 @@
 #define STOCKFISHWRAPPER_H_INCLUDED
 
 #include "../JuceLibraryCode/JuceHeader.h"
+#include "ChessBoard.h"
 
 
 

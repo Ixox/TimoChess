@@ -52,6 +52,7 @@ class ChessBoard {
         void display();
         Image getPieceImage(String move);
         Image getPieceImage(int l, int n);
+        void promotePawnTo(String move, Piece promotion);
     private:
         Case board[8][8];    
     

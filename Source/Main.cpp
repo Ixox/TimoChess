@@ -118,7 +118,9 @@ public:
             // Mate en 1 coup
             // stockfish->setStartingFen("5r2/k5P1/8/8/8/3R4/1R6/6K1 w - - 0 1");
             // Mate en 2 coup
-            stockfish->setStartingFen("5r2/1k4P1/8/8/8/3R4/2R5/6K1 w - - 0 1");
+            //stockfish->setStartingFen("5r2/1k4P1/8/8/8/3R4/2R5/6K1 w - - 0 1");
+            // Pawn Promotion
+            // stockfish->setStartingFen("5r2/k5P1/8/8/8/8/1K4p1/8 w - - 0 1");
 
             stockfish->setLevel(gameSetup->getLevel()); 
             stockfish->setVariant(gameSetup->getVariant()); 

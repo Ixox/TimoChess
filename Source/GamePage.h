@@ -75,6 +75,7 @@ private:
     ChessBoard board;
     void showCurrentMovingPiece(Color color, String move);
     void showEventualTakenPiece(Color color, String move);
+    void pawnPromotion(String move);
     void cleanPieceImages(Color color);
     void setMoveError(bool error);
     void displayPlayerCurrentMove();
