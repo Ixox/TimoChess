@@ -22,7 +22,7 @@
 
 #include "GamePage.h"
 
-
+// #define GP_DEBUG
 //[MiscUserDefs] You can add your own user definitions and misc code here...
 //[/MiscUserDefs]
 
@@ -434,19 +434,24 @@ void GamePage::timerCallback() {
 
         String bestMove = stockfish->checkBestMove();
         if (bestMove.length() > 0) {
-            // printf(">> GamePage::timerCallback computer moved : %s \n", bestMove.toRawUTF8());
-            // Compute wins ?
-            if (stockfish->getMate() == 1) {
-                stopTimer();
-                gameListener->gameFinished(currentPlayerColor, realPlayerColor, bestMove + " : ");
-                return;
-            }
+#ifdef GP_DEBUG            
+            printf(">> GamePage::timerCallback computer moved : %s \n", bestMove.toRawUTF8());
+            printf(">> GamePage::getMate : %i \n", stockfish->getMate());
+            printf(">> GamePage::getPonder : %s \n", stockfish->getPonder().toRawUTF8());
+#endif
             // printf("Ponder >>>>>>>>>> %s \n", stockfish->getPonder().toRawUTF8());
             if (stockfish->getPonder().length() == 0) {
-                // No ponder => means Slatemate
-                stopTimer();
-                gameListener->gameFinished(NOCOLOR, realPlayerColor, bestMove + " : ");
-                return;
+                // Compute wins ?
+                if (stockfish->getMate() == 1) {
+                    stopTimer();
+                    gameListener->gameFinished(currentPlayerColor, realPlayerColor, bestMove + " : ");
+                    return;
+                } else {
+                    // No ponder => means Slatemate
+                    stopTimer();
+                    gameListener->gameFinished(NOCOLOR, realPlayerColor, bestMove + " : ");
+                    return;
+                }
             }
             
             // Length 5 means pawn promotion
