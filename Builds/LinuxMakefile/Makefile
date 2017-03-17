@@ -66,6 +66,7 @@ endif
 OBJECTS := \
   $(JUCE_OBJDIR)/BoardComponent_478788c0.o \
   $(JUCE_OBJDIR)/ChessBoard_b513ba4f.o \
+  $(JUCE_OBJDIR)/EndOfTheGame_4224d79a.o \
   $(JUCE_OBJDIR)/GamePage_c4fe5baa.o \
   $(JUCE_OBJDIR)/GameSetup_5a76d8c.o \
   $(JUCE_OBJDIR)/Main_90ebc5c2.o \
@@ -108,6 +109,11 @@ $(JUCE_OBJDIR)/BoardComponent_478788c0.o: ../../Source/BoardComponent.cpp
 $(JUCE_OBJDIR)/ChessBoard_b513ba4f.o: ../../Source/ChessBoard.cpp
 	-@mkdir -p $(JUCE_OBJDIR)
 	@echo "Compiling ChessBoard.cpp"
+	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) -o "$@" -c "$<"
+
+$(JUCE_OBJDIR)/EndOfTheGame_4224d79a.o: ../../Source/EndOfTheGame.cpp
+	-@mkdir -p $(JUCE_OBJDIR)
+	@echo "Compiling EndOfTheGame.cpp"
 	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) -o "$@" -c "$<"
 
 $(JUCE_OBJDIR)/GamePage_c4fe5baa.o: ../../Source/GamePage.cpp

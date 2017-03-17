@@ -18,6 +18,8 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "StockfishWrapper.h"
 
+// #define SW_DEBUG 1
+
 /*
   ==============================================================================
     LookFor 
@@ -30,14 +32,51 @@ void LookFor::run() {
     ssize_t read;        
     line = (char*)malloc(1024);
     while ((read = getline(&line, &len, stockfishWrapper->istream)) != -1) {
-        printf("SF >> %s", line);
+#ifdef SW_DEBUG
+         printf("SF >>> %s", line);
+#endif
+        StringArray words;
+
+        words.addTokens(String(line), " \n", "\"");
+        // Mate and Cp are not specified on bestmove line
+        bool bestMoveLine = strncmp(line, "bestmove", 8) == 0;
+        if (!bestMoveLine) {
+            stockfishWrapper->setMate(10000);
+            stockfishWrapper->setCp(10000);
+        } else {
+            stockfishWrapper->setPonder("");
+        }
+
+        for (int k=0; k < words.size() -1; k++ ) {
+            String word = words[k];
+            String value  = words[k + 1];
+            if (word == "ponder") {
+                String sf_ponder = value;
+#ifdef SW_DEBUG
+                printf("SF * ponder : %s\n", sf_ponder.toRawUTF8());
+#endif
+                stockfishWrapper->setPonder(sf_ponder);
+            } else if (word == "mate") { 
+                int sf_mate = atoi(value.toRawUTF8());
+#ifdef SW_DEBUG
+                printf("SF * mate : %i\n", sf_mate);
+#endif                    
+                stockfishWrapper->setMate(sf_mate);
+            } else if (word == "cp") { 
+                int sf_cp = atoi(value.toRawUTF8());
+#ifdef SW_DEBUG
+                printf("SF * cp : %i\n", sf_cp);
+#endif                    
+                stockfishWrapper->setCp(sf_cp);
+            }
+        }
+
         if (stockfishWrapper->lookForString.length() > 0 && strncmp(line, stockfishWrapper->lookForString.toRawUTF8(), stockfishWrapper->lookForString.length()) == 0) {
             // printf("-- LOOKFOR THREAD : '%s' FOUND !\n", stockfishWrapper->lookForString.toRawUTF8());
             stockfishWrapper->setLookForFound(line, true);
         }
     }
 }
-
 
 
 
@@ -139,10 +178,11 @@ void StockfishWrapper::setLookForFound(String str, bool b) {
 
 void StockfishWrapper::startLookingFor(String lookFor)
 {
+#ifdef SW_DEBUG    
     printf("startLookingFor...%s\n", lookFor.toRawUTF8());
+#endif
     lookForString = lookFor;
     setLookForFound("", false);
-    printf("startLookingFor exit...\n");
 }
 
 String StockfishWrapper::getLookForString() {
@@ -205,11 +245,15 @@ void StockfishWrapper::startSearchingBestMoveInMillis(int millis) {
         
     //printf(">>>>>>>>>>>>>>> this->startingFen size %i :  %s\n", this->startingFen.length(), this->startingFen.toRawUTF8());
     if (this->startingFen.length() > 0 ) {
-       fprintf(ostream, "position fen \"%s\" %s\n", this->startingFen.toRawUTF8(), newPosString.toRawUTF8());        
-       printf(">>>> position fen \"%s\" %s\n", this->startingFen.toRawUTF8(), newPosString.toRawUTF8());      
+       fprintf(ostream, "position fen \"%s\" %s\n", this->startingFen.toRawUTF8(), newPosString.toRawUTF8());
+#ifdef SW_DEBUG    
+      printf(">>>> position fen \"%s\" %s\n", this->startingFen.toRawUTF8(), newPosString.toRawUTF8());      
+#endif
     } else {
        fprintf(ostream, "position startpos %s\n", newPosString.toRawUTF8());
+#ifdef SW_DEBUG    
        printf(">>>> position startpos %s\n", newPosString.toRawUTF8());
+#endif
     }
     
     startLookingFor("bestmove");
@@ -228,15 +272,21 @@ void StockfishWrapper::startSearchingBestMove()
     // printf(">>>>>>>>>>>>>>> this->startingFen size %i :  %s\n", this->startingFen.length(), this->startingFen.toRawUTF8());
     if (this->startingFen.length() > 0 ) {
        fprintf(ostream, "position fen \"%s\" %s\n", this->startingFen.toRawUTF8(), newPosString.toRawUTF8());        
+#ifdef SW_DEBUG    
        printf(">>>> position fen \"%s\" %s\n", this->startingFen.toRawUTF8(), newPosString.toRawUTF8());      
+#endif
     } else {
        fprintf(ostream, "position startpos %s\n", newPosString.toRawUTF8());
+#ifdef SW_DEBUG    
        printf(">>>> position startpos %s\n", newPosString.toRawUTF8());
+#endif
     }
     
     startLookingFor("bestmove");
     fprintf(ostream, "go  \n");
+#ifdef SW_DEBUG    
     printf(">>>>> go \n");
+#endif
 }
 
 
@@ -244,9 +294,11 @@ String StockfishWrapper::checkBestMove() {
     String bestMoveLine = this->getLookForString();
     if (bestMoveLine.length() > 0) {
         StringArray strings;
-        strings.addTokens (bestMoveLine, " ", "\"");
+        strings.addTokens (bestMoveLine, " \n", "\"");
         String bm = strings[1];
+#ifdef SW_DEBUG       
         printf(">>>> BESTMOVE : %s\n", bm.toRawUTF8());
+#endif
         return bm;
     }
     return "";

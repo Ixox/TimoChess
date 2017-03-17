@@ -125,6 +125,7 @@ GamePage::GamePage ()
 
 
     //[Constructor] You can add your own custom stuff here..
+    waitForPromotionChoice = false;
     //[/Constructor]
 }
 
@@ -273,13 +274,19 @@ bool GamePage::keyPressed (const KeyPress& key)
 {
     //[UserCode_keyPressed] -- Add your code here...
 
+    if (waitForPromotionChoice) {
+        // must be done through the UI
+        printf("#GamePage::keyPressed  : Waiting for promotion piece.. Must be done through the UI");
+        return false;
+    }
+
     if (key == 'z') {
         this->gameListener->showBoard(&board);
         return true;
     }
 
     int moveLength = playerCurrentMove.length();
-    printf("Key press : %i / move length : %i \n", key.getKeyCode(), moveLength);
+//    printf("Key press : %i / move length : %i \n", key.getKeyCode(), moveLength);
 
     if (key.getKeyCode() == 8) {
         if (moveLength > 0) {
@@ -311,40 +318,13 @@ bool GamePage::keyPressed (const KeyPress& key)
     (*playerMove)->setText(playerCurrentMove, dontSendNotification);
     this->showCurrentMovingPiece(realPlayerColor, playerCurrentMove);
 
-    if (playerCurrentMove.length() == 4) {
-        stockfish->addMove(playerCurrentMove);
-        // Check validity
-        printf("Quick move to check validity: bestmove....\n");
-        stockfish->startSearchingBestMoveInMillis(50);
-        String bestmove = "";
+    if (playerCurrentMove.length() >= 4) {
 
-        while (bestmove.length() == 0) {
-            bestmove = stockfish->checkBestMove();
-        }
-        printf("Quick move to check validity: bestmove : %s\n", bestmove.toRawUTF8());
-
-        // If stockfish move our color, it means previous move was illegal
-        Color validityTest = board.getColor(bestmove);
-        if (validityTest == this->currentPlayerColor || validityTest == NOCOLOR) {
-            // printf("## STOCKFISH MOVE OUR COLOR, LAST MOVE WAS WRONG !!!!!\n");
-            stockfish->cancelLastMove();
-            playerCurrentMove.clear();
-            displayPlayerCurrentMove();
-            cleanPieceImages(realPlayerColor);
-            // move error must be called here (not before)
-            this->setMoveError(true);
-            this->repaint();
-        } else {
-            // Every thing is fine :)
-            showEventualTakenPiece(currentPlayerColor, playerCurrentMove);
-            board.move(playerCurrentMove);
-
-            // now computer must play
-            currentPlayerColor = currentPlayerColor == WHITE ? BLACK : WHITE;
-            this->cleanPieceImages(currentPlayerColor);
-            stockfish->startSearchingBestMove();
-            (*computerMoveOld)->setText((*computerMove)->getText(), dontSendNotification);
-            repaint();
+        if (playerCurrentMove.length() == 4 && needsPromotionChoice(playerCurrentMove)) {
+            waitForPromotionChoice = true;
+            this->gameListener->askForPromotionPiece(realPlayerColor);
+        }  else {
+            realPlayerMove(playerCurrentMove);
         }
     }
 
@@ -354,8 +334,88 @@ bool GamePage::keyPressed (const KeyPress& key)
 }
 
 
-
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
+
+
+void GamePage::realPlayerMove(String playerCurrentMove) {
+    // Here playerCurrentMove must be valid
+    stockfish->addMove(playerCurrentMove);
+    // Check validity
+    // printf("Quick move to check validity: bestmove....\n");
+    stockfish->startSearchingBestMoveInMillis(50);
+    String bestmove = "";
+
+    while (bestmove.length() == 0) {
+        bestmove = stockfish->checkBestMove();
+    }
+    // printf(">> Quick move to check validity: bestmove : '%s'\n", bestmove.toRawUTF8());
+
+    // Call after player moves to check validity
+    if (bestmove == "(none)") {
+        // Real player won ? Or slatemate ?
+        stopTimer();
+        Color winner = (stockfish->getMate() == 0) ? realPlayerColor : NOCOLOR;
+        gameListener->gameFinished(winner, realPlayerColor, "");
+        return;
+    }
+
+    // If stockfish move our color, it means previous move was illegal
+    Color validityTest = board.getColor(bestmove);
+    if (validityTest == this->currentPlayerColor || validityTest == NOCOLOR) {
+        printf("## STOCKFISH MOVE OUR COLOR, LAST MOVE WAS WRONG !!!!!\n");
+        stockfish->cancelLastMove();
+        playerCurrentMove.clear();
+        displayPlayerCurrentMove();
+        cleanPieceImages(realPlayerColor);
+        // move error must be called here (not before)
+        this->setMoveError(true);
+        this->repaint();
+    } else {
+        // Every thing is fine :)
+        showEventualTakenPiece(currentPlayerColor, playerCurrentMove);
+        board.move(playerCurrentMove);
+
+        // now computer must play
+        currentPlayerColor = currentPlayerColor == WHITE ? BLACK : WHITE;
+        this->cleanPieceImages(currentPlayerColor);
+        stockfish->startSearchingBestMove();
+        (*computerMoveOld)->setText((*computerMove)->getText(), dontSendNotification);
+        repaint();
+    }
+}
+
+bool GamePage::needsPromotionChoice(String playerCurrentMove) {
+    char numberDest = playerCurrentMove.toRawUTF8()[3];
+    return board.getPiece(playerCurrentMove) == PAWN && (numberDest == '1' || numberDest == '8');
+}
+
+void GamePage::setPromotionChoice(Piece piece) {
+    waitForPromotionChoice = false;
+    switch (piece) {
+        case QUEEN:
+            playerCurrentMove += 'q';
+            break;
+        case ROCK:
+            playerCurrentMove += 'r';
+            break;
+        case BISHOP:
+            playerCurrentMove += 'b';
+            break;
+        case KNIGHT:
+            playerCurrentMove += 'n';
+            break;
+        default:
+            printf("## Cannot promote to %i default to Queen\n", (int)piece);
+            playerCurrentMove += 'q';
+            break;
+    }
+    if (playerCurrentMove.length() == 5) {
+        printf(">>  setPromotionChoice : player current move promotion : %s\n", playerCurrentMove.toRawUTF8());
+        realPlayerMove(playerCurrentMove);
+    } else {
+        printf("## player current move is wrong after promotion : %s\n", playerCurrentMove.toRawUTF8());
+    }
+}
 
 void GamePage::displayPlayerCurrentMove() {
     if (playerCurrentMove.length() > 0) {
@@ -363,7 +423,6 @@ void GamePage::displayPlayerCurrentMove() {
     } else {
         (*playerMove)->setText("????", dontSendNotification);
     }
-
 }
 
 void GamePage::timerCallback() {
@@ -375,8 +434,21 @@ void GamePage::timerCallback() {
 
         String bestMove = stockfish->checkBestMove();
         if (bestMove.length() > 0) {
-             printf(">> GamePage::timerCallback computer moved : %s \n", bestMove.toRawUTF8());
-
+            // printf(">> GamePage::timerCallback computer moved : %s \n", bestMove.toRawUTF8());
+            // Compute wins ?
+            if (stockfish->getMate() == 1) {
+                stopTimer();
+                gameListener->gameFinished(currentPlayerColor, realPlayerColor, bestMove + " : ");
+                return;
+            }
+            // printf("Ponder >>>>>>>>>> %s \n", stockfish->getPonder().toRawUTF8());
+            if (stockfish->getPonder().length() == 0) {
+                // No ponder => means Slatemate
+                stopTimer();
+                gameListener->gameFinished(NOCOLOR, realPlayerColor, bestMove + " : ");
+                return;
+            }
+            
             // Length 5 means pawn promotion
             if (bestMove.length() == 5) {
                 pawnPromotion(bestMove);

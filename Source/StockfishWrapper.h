@@ -65,6 +65,12 @@ class StockfishWrapper {
         String getLookForString();
         void setStartingFen(String startingFen);
         String getStartingFen();
+        void setMate(int mate) { sf_mate = mate; };
+        void setCp(int cp) { sf_cp = cp; };
+        void setPonder(String ponder) { sf_ponder = ponder; };
+        int getCp() { return sf_cp; };
+        int getMate() { return sf_mate; };
+        String getPonder() { return sf_ponder; };
     private:
         String getAllMoves();
         Variant variant;
@@ -73,6 +79,9 @@ class StockfishWrapper {
         int rpipe[2];
         FILE *ostream, *istream;
         LinkedListPointer<Move> moves;
+        int sf_cp;
+        int sf_mate;
+        String sf_ponder;
 
         void setLookForFound(String str, bool b);
         String lookForFound;

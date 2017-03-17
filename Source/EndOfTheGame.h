@@ -17,15 +17,12 @@
   ==============================================================================
 */
 
-#ifndef __JUCE_HEADER_1DB0FB510054D7EE__
-#define __JUCE_HEADER_1DB0FB510054D7EE__
+#ifndef __JUCE_HEADER_11D8D89CF380EFE__
+#define __JUCE_HEADER_11D8D89CF380EFE__
 
 //[Headers]     -- You can add your own extra header files here --
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "GameListener.h"
-#include "StockfishWrapper.h"
-#include "ChessBoard.h"
-
 //[/Headers]
 
 
@@ -38,81 +35,43 @@
     Describe your class and how it works here!
                                                                     //[/Comments]
 */
-class GamePage  : public Component,
-                  public Timer,
-                  public ButtonListener
+class EndOfTheGame  : public Component,
+                      public ButtonListener
 {
 public:
     //==============================================================================
-    GamePage ();
-    ~GamePage();
+    EndOfTheGame ();
+    ~EndOfTheGame();
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
     void setGameListener(GameListener *gl);
-    void setStockfish(StockfishWrapper * stockfishWrapper);
-    void start(Color realPlayerColor);
-    void timerCallback();
-    void setPromotionChoice(Piece piece);
+    void theWinnerIs(Color color, Color realPlayerColor, String additionalText);
     //[/UserMethods]
 
     void paint (Graphics& g) override;
     void resized() override;
     void buttonClicked (Button* buttonThatWasClicked) override;
-    bool keyPressed (const KeyPress& key) override;
 
-    // Binary resources:
-    static const char* reset_png;
-    static const int reset_pngSize;
-    static const char* showBoard_png;
-    static const int showBoard_pngSize;
 
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
     GameListener *gameListener;
-    StockfishWrapper * stockfish;
-    String playerCurrentMove;
-    ChessBoard board;
-    void showCurrentMovingPiece(Color color, String move);
-    void showEventualTakenPiece(Color color, String move);
-    void pawnPromotion(String move);
-    void cleanPieceImages(Color color);
-    void setMoveError(bool error);
-    void displayPlayerCurrentMove();
-    bool needsPromotionChoice(String move);
-    void realPlayerMove(String playerCurrentMove);
-    bool moveError;
-    Color currentPlayerColor;
-    Color realPlayerColor;
-    int ticTac;
-    ScopedPointer<Label> *playerMove;
-    ScopedPointer<Label> *playerMoveOld;
-    ScopedPointer<Label> *computerMove;
-    ScopedPointer<Label> *computerMoveOld;
-    bool waitForPromotionChoice;
+    Colour fillColour;
     //[/UserVariables]
 
     //==============================================================================
-    ScopedPointer<ImageButton> resetButton;
-    ScopedPointer<Label> whiteMove;
-    ScopedPointer<Label> blackMove;
-    ScopedPointer<Label> whiteMoveOld;
-    ScopedPointer<Label> blackMoveOld;
-    ScopedPointer<ImageButton> whitePieceButton;
-    ScopedPointer<ImageButton> blackPieceButton;
-    ScopedPointer<ImageButton> boardButton;
-    ScopedPointer<ImageButton> whiteTakesBlackButton;
-    ScopedPointer<ImageButton> blackTakesWhiteButton;
+    ScopedPointer<Label> message;
+    ScopedPointer<ImageButton> backButton;
     ScopedPointer<Drawable> drawable1;
-    ScopedPointer<Drawable> drawable2;
 
 
     //==============================================================================
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (GamePage)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (EndOfTheGame)
 };
 
 //[EndFile] You can add extra defines here...
 //[/EndFile]
 
-#endif   // __JUCE_HEADER_1DB0FB510054D7EE__
+#endif   // __JUCE_HEADER_11D8D89CF380EFE__

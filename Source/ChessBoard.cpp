@@ -181,15 +181,44 @@ bool ChessBoard::move(String move) {
     board[letterSrc][numberSrc].color = NOCOLOR;
     board[letterSrc][numberSrc].piece = NOPIECE;
 
+    // Promotion
+    if (move.length() == 5) {
+        if (board[letterDest][numberDest].piece == PAWN) {
+            if (numberDest == 0 || numberDest == 7) {
+                switch (move.toRawUTF8()[4]) {
+                    case 'q':
+                        board[letterDest][numberDest].piece = QUEEN ;
+                        break;
+                    case 'r':
+                        board[letterDest][numberDest].piece = ROCK ;
+                        break;
+                    case 'n':
+                        board[letterDest][numberDest].piece = KNIGHT ;
+                        break;
+                    case 'b':
+                        board[letterDest][numberDest].piece = BISHOP ;
+                        break;
+                }
+            }
+        }
+    }
+
+
     // Casttle ?
+#ifdef CB_DEBUG
      printf(">> ChessBoard : move : %s\n", move.toRawUTF8());
+#endif
     if (board[letterDest][numberDest].piece == KING) {
         int d = letterDest - letterSrc;
         d = d < 0 ? -d : d;
+#ifdef CB_DEBUG
         printf(">> ChessBoard : KING move distance : %i \n", d);
+#endif
         if (d == 2) {
             // Yes Casttle !
+#ifdef CB_DEBUG
             printf(">> ChessBoard : Castle detected\n");
+#endif
             String error = numberDest != numberSrc ? "# CANNOT CASTLE AND CHANGING NUMBER #" : "";
             if (letterDest == 2) { // 2 is 'c'            
                 // Let's move the rock

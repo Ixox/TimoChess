@@ -12,7 +12,9 @@
       <FILE id="lSCULp" name="bQueen.png" compile="0" resource="1" file="Source/images/bQueen.png"/>
       <FILE id="fOp9QO" name="bRock.png" compile="0" resource="1" file="Source/images/bRock.png"/>
       <FILE id="HKP8hQ" name="human.png" compile="0" resource="1" file="Source/images/human.png"/>
+      <FILE id="iYULNw" name="reset.png" compile="0" resource="1" file="Source/images/reset.png"/>
       <FILE id="rh8a7g" name="rpi.png" compile="0" resource="1" file="Source/images/rpi.png"/>
+      <FILE id="Bm8cY4" name="slatemate.png" compile="0" resource="1" file="Source/images/slatemate.png"/>
       <FILE id="tgwNrh" name="wBishop.png" compile="0" resource="1" file="Source/images/wBishop.png"/>
       <FILE id="yoOn5g" name="wking.png" compile="0" resource="1" file="Source/images/wking.png"/>
       <FILE id="bxxDA9" name="wKnight.png" compile="0" resource="1" file="Source/images/wKnight.png"/>
@@ -27,6 +29,9 @@
             file="Source/BoardComponent.h"/>
       <FILE id="acE8Rm" name="ChessBoard.cpp" compile="1" resource="0" file="Source/ChessBoard.cpp"/>
       <FILE id="NxgYTZ" name="ChessBoard.h" compile="0" resource="0" file="Source/ChessBoard.h"/>
+      <FILE id="KcvsQ6" name="EndOfTheGame.cpp" compile="1" resource="0"
+            file="Source/EndOfTheGame.cpp"/>
+      <FILE id="q4NFWi" name="EndOfTheGame.h" compile="0" resource="0" file="Source/EndOfTheGame.h"/>
       <FILE id="VohLKC" name="GameListener.h" compile="0" resource="0" file="Source/GameListener.h"/>
       <FILE id="hxM0FR" name="GamePage.cpp" compile="1" resource="0" file="Source/GamePage.cpp"/>
       <FILE id="w3uYbw" name="GamePage.h" compile="0" resource="0" file="Source/GamePage.h"/>

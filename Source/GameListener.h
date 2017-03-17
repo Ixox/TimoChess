@@ -11,7 +11,7 @@
 #ifndef GAMELISTENER_H_INCLUDED
 #define GAMELISTENER_H_INCLUDED
 
-class ChessBoard;
+#include "ChessBoard.h"
 
 class GameListener {
     public:
@@ -19,6 +19,9 @@ class GameListener {
     virtual void startGame() = 0;
     virtual void resumeGame() = 0;
     virtual void showBoard(ChessBoard* chessBoard) = 0;
+    virtual void askForPromotionPiece(Color color) = 0;
+    virtual void answerPromotionPiece(Piece promotion) = 0;    
+    virtual void gameFinished(Color winner, Color realPlayerColor, String additionalText) = 0;    
 };
 
 

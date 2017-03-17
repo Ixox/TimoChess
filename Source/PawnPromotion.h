@@ -22,6 +22,7 @@
 
 //[Headers]     -- You can add your own extra header files here --
 #include "../JuceLibraryCode/JuceHeader.h"
+#include "ChessBoard.h"
 //[/Headers]
 
 
@@ -44,16 +45,20 @@ public:
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
+    void setGameListener(GameListener *gl);
+    void setColor(Color color);
     //[/UserMethods]
 
     void paint (Graphics& g) override;
     void resized() override;
     void buttonClicked (Button* buttonThatWasClicked) override;
+    bool keyPressed (const KeyPress& key) override;
 
 
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
+    GameListener *gameListener;
     //[/UserVariables]
 
     //==============================================================================
@@ -62,6 +67,10 @@ private:
     ScopedPointer<ImageButton> bishopButton;
     ScopedPointer<ImageButton> knightButton;
     ScopedPointer<Label> promotionLabel;
+    ScopedPointer<Label> aLetter;
+    ScopedPointer<Label> bLetter;
+    ScopedPointer<Label> cLetter;
+    ScopedPointer<Label> dLetter;
 
 
     //==============================================================================

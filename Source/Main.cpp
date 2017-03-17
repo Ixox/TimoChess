@@ -11,10 +11,12 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "GameSetup.h"
 #include "GamePage.h"
+#include "PawnPromotion.h"
 #include "BoardComponent.h"
 #include "GameListener.h"
 #include "StockfishWrapper.h"
 #include "ChessBoard.h"
+#include "EndOfTheGame.h"
 
 //==============================================================================
 class TimoChessApplication  : public JUCEApplication
@@ -74,8 +76,12 @@ public:
             gameSetup->setGameListener(this);
             gamePage = new GamePage();
             gamePage->setGameListener(this);
+            pawnPromotion = new PawnPromotion();
+            pawnPromotion->setGameListener(this);
             boardComponent = new BoardComponent();
             boardComponent->setGameListener(this);
+            endOfTheGame = new EndOfTheGame();
+            endOfTheGame->setGameListener(this);
             
             setup();
             
@@ -116,11 +122,19 @@ public:
         void startGame() {            
             // DEBUG 
             // Mate en 1 coup
-            // stockfish->setStartingFen("5r2/k5P1/8/8/8/3R4/1R6/6K1 w - - 0 1");
-            // Mate en 2 coup
-            //stockfish->setStartingFen("5r2/1k4P1/8/8/8/3R4/2R5/6K1 w - - 0 1");
+            //stockfish->setStartingFen("5r2/k5P1/8/8/8/3R4/1R6/6K1 w - - 0 1");
+            //Mate en 2 coup
+             stockfish->setStartingFen("5r2/1k4P1/8/8/8/3R4/2R5/6K1 w - - 0 1");
+            // White plays and PATE !
+            //stockfish->setStartingFen("7k/5Q2/8/8/8/8/8/K4R2 w - - 0 1");
             // Pawn Promotion
-            // stockfish->setStartingFen("5r2/k5P1/8/8/8/8/1K4p1/8 w - - 0 1");
+             // stockfish->setStartingFen("5r2/k5P1/8/8/8/8/1K4p1/8 w - - 0 1");
+            // Castle ?
+            // stockfish->setStartingFen("r3k2r/pppqpppp/8/8/8/8/PP1PPQPP/R3K2R w KQkq - 0 1");
+             
+
+            // PATE !
+            // stockfish->setStartingFen( "k7/P7/K7/8/8/4B3/8/8 w - - 0 1");
 
             stockfish->setLevel(gameSetup->getLevel()); 
             stockfish->setVariant(gameSetup->getVariant()); 
@@ -129,24 +143,44 @@ public:
             setContentNonOwned (gamePage, true);
             setVisible (true);
             gamePage->grabKeyboardFocus();
-
         }
         void resumeGame() {            
             setContentNonOwned (gamePage, true);
             setVisible (true);
             gamePage->grabKeyboardFocus();
         }
-
         void showBoard(ChessBoard* chessBoard) {
             boardComponent->setChessboard(chessBoard);
             setContentNonOwned (boardComponent, true);
             setVisible (true);
             boardComponent->grabKeyboardFocus();
         }
+        void askForPromotionPiece(Color color) {
+            pawnPromotion->setColor(color);
+            setContentNonOwned (pawnPromotion, true);
+            setVisible (true);
+            pawnPromotion->grabKeyboardFocus();
+        }
+        void answerPromotionPiece(Piece promotion) {
+            gamePage->setPromotionChoice(promotion);
+            setContentNonOwned (gamePage, true);
+            setVisible (true);
+            gamePage->grabKeyboardFocus();
+        }
+        void gameFinished(Color winner, Color realPlayerColor, String additionalText) {
+            endOfTheGame->theWinnerIs(winner, realPlayerColor, additionalText);
+            setContentNonOwned (endOfTheGame, true);
+            setVisible (true);
+            endOfTheGame->grabKeyboardFocus();            
+        }
+
+
     private:
         GameSetup *gameSetup;
         GamePage *gamePage;
         BoardComponent *boardComponent;
+        PawnPromotion *pawnPromotion;
+        EndOfTheGame *endOfTheGame;
         StockfishWrapper *stockfish;
         JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainWindow)
     };
