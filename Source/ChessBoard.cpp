@@ -158,29 +158,62 @@ void ChessBoard::initWithFen(String fenFull) {
 }
 
 bool ChessBoard::move(String move) {    
-    int letter = move.toRawUTF8()[0] - 'a';
-    if (letter < 0 || letter >7) {
+    int letterSrc = move.toRawUTF8()[0] - 'a';
+    if (letterSrc < 0 || letterSrc >7) {
         return false;
     }
-    int number = move.toRawUTF8()[1] - '1';
-    if (number < 0 || number >7) {
+    int numberSrc = move.toRawUTF8()[1] - '1';
+    if (numberSrc < 0 || numberSrc >7) {
         return false;
     }
     
-    int rowDest = move.toRawUTF8()[2] - 'a';
-    if (rowDest < 0 || rowDest >7) {
+    int letterDest =  move.toRawUTF8()[2] - 'a';
+    if (letterDest < 0 || letterDest >7) {
         return false;
     }
-    int colDest = move.toRawUTF8()[3] - '1';
-    if (colDest < 0 || colDest >7) {
+    int numberDest = move.toRawUTF8()[3] - '1';
+    if (numberDest < 0 || numberDest >7) {
         return false;
     }
-//    printf("* * * * * * * ");
-//    printf(" * * * * * * Move from %i, %i TO %i, %i\n", letter, number, rowDest, colDest);
-    board[rowDest][colDest].color = board[letter][number].color;
-    board[rowDest][colDest].piece = board[letter][number].piece ;
-    board[letter][number].color = NOCOLOR;
-    board[letter][number].piece = NOPIECE;
+
+    board[letterDest][numberDest].color = board[letterSrc][numberSrc].color;
+    board[letterDest][numberDest].piece = board[letterSrc][numberSrc].piece ;
+    board[letterSrc][numberSrc].color = NOCOLOR;
+    board[letterSrc][numberSrc].piece = NOPIECE;
+
+    // Casttle ?
+     printf(">> ChessBoard : move : %s\n", move.toRawUTF8());
+    if (board[letterDest][numberDest].piece == KING) {
+        int d = letterDest - letterSrc;
+        d = d < 0 ? -d : d;
+        printf(">> ChessBoard : KING move distance : %i \n", d);
+        if (d == 2) {
+            // Yes Casttle !
+            printf(">> ChessBoard : Castle detected\n");
+            String error = numberDest != numberSrc ? "# CANNOT CASTLE AND CHANGING NUMBER #" : "";
+            if (letterDest == 2) { // 2 is 'c'            
+                // Let's move the rock
+                error += board[0][numberSrc].piece != ROCK ? "# NO ROCK ON THE LEFT #" : "";
+                board[3][numberSrc].color = board[0][numberSrc].color;
+                board[3][numberSrc].piece = board[0][numberSrc].piece ;                                
+                board[0][numberSrc].color = NOCOLOR;
+                board[0][numberSrc].piece = NOPIECE;
+                
+            } else if (letterDest == 6) { // 6 is 'g'
+                error += board[7][numberSrc].piece != ROCK ? "# NO ROCK ON THE RIGHT #" : "";
+                board[5][numberSrc].color = board[7][numberSrc].color;
+                board[5][numberSrc].piece = board[7][numberSrc].piece ;
+                board[7][numberSrc].color = NOCOLOR;
+                board[7][numberSrc].piece = NOPIECE;                
+            } else {
+                error += "# WRONG KING POSITION #";
+            }
+            if (error.length() > 0) {
+                printf("####### CASTTLE ERROR : %s \n", error.toRawUTF8());
+            }
+        }
+    }
+
     return true;
 }
 
