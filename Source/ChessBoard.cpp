@@ -12,6 +12,8 @@
 #include "ChessBoard.h"
 
 
+// #define CB_DEBUG 1
+
 ChessBoard::ChessBoard() {
     for (int l=0; l<8; l++) {
         for (int r= 0; r<8; r++) {
@@ -175,6 +177,54 @@ bool ChessBoard::move(String move) {
     if (numberDest < 0 || numberDest >7) {
         return false;
     }
+
+
+#ifdef CB_DEBUG
+    if ( board[letterSrc][numberSrc].color == WHITE ) {
+        printf("En Passant ============ WHITE\n");
+        printf("numberSrc  : %i  \n", numberSrc);
+        printf("numberDest : %i  \n", numberDest);
+        printf("board[letterSrc][numberSrc].color : %i  \n", (int)board[letterSrc][numberSrc].color);
+        printf("board[letterSrc][numberSrc].piece : %i  \n", (int)board[letterSrc][numberSrc].piece);
+        printf("board[letterDest][5].color : %i  \n", (int)board[letterDest][5].color);
+        printf("board[letterDest][5].piece : %i  \n", (int)board[letterDest][5].piece);
+    }
+#endif
+
+    if ( board[letterSrc][numberSrc].color == WHITE 
+        && board[letterSrc][numberSrc].piece == PAWN
+        && (numberDest == 5 && numberSrc == 4)
+        && board[letterDest][4].color == BLACK 
+        && board[letterDest][4].piece == PAWN) 
+    {
+        board[letterDest][4].color = NOCOLOR;
+        board[letterDest][4].piece = NOPIECE;            
+    }
+
+#ifdef CB_DEBUG
+    if ( board[letterSrc][numberSrc].color == BLACK ) {
+        printf("En Passant ========== BLACK\n");
+        printf("numberSrc  : %i  \n", numberSrc);
+        printf("numberDest : %i  \n", numberDest);
+        printf("board[letterSrc][numberSrc].color : %i  \n", (int)board[letterSrc][numberSrc].color);
+        printf("board[letterSrc][numberSrc].piece : %i  \n", (int)board[letterSrc][numberSrc].piece);
+        printf("board[letterDest][4].color : %i  \n", (int)board[letterDest][4].color);
+        printf("board[letterDest][4].piece : %i  \n", (int)board[letterDest][4].piece);
+    }
+#endif
+
+    if ( board[letterSrc][numberSrc].color == BLACK 
+        && board[letterSrc][numberSrc].piece == PAWN
+        && (numberSrc == 3 && numberDest == 2)
+        && board[letterDest][3].color == WHITE 
+        && board[letterDest][3].piece == PAWN) 
+    {
+        board[letterDest][3].color = NOCOLOR;
+        board[letterDest][3].piece = NOPIECE;            
+    }
+
+
+
 
     board[letterDest][numberDest].color = board[letterSrc][numberSrc].color;
     board[letterDest][numberDest].piece = board[letterSrc][numberSrc].piece ;
