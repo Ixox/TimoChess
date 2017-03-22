@@ -86,11 +86,15 @@ private:
     Color currentPlayerColor;
     Color realPlayerColor;
     int ticTac;
+    int waitTillTicTac;
     ScopedPointer<Label> *playerMove;
     ScopedPointer<Label> *playerMoveOld;
     ScopedPointer<Label> *computerMove;
     ScopedPointer<Label> *computerMoveOld;
     bool waitForPromotionChoice;
+    bool waitForPlayerToMoveComputerPiece;
+    String playerMovesComputerPiece;
+    String computerBestMove;
     //[/UserVariables]
 
     //==============================================================================

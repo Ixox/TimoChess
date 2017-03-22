@@ -201,7 +201,13 @@ void GamePage::paint (Graphics& g)
         g.drawRoundedRectangle (Rectangle<float> (proportionOfWidth (0.005f), proportionOfHeight (0.02f), proportionOfWidth (0.99f), proportionOfHeight (0.43f)), 6.000f, 10);
     } else {
         g.drawRoundedRectangle (Rectangle<float> (proportionOfWidth (0.005f), proportionOfHeight (0.45f), proportionOfWidth (0.99f), proportionOfHeight (0.43f)), 6.000f, 10);
-
+    }
+    if (waitForPlayerToMoveComputerPiece) {
+        g.setColour (Colours::lightgreen);
+        if (currentPlayerColor == BLACK) {
+            // proportionOfWidth (0.1967f), proportionOfHeight (0.5474f), proportionOfWidth (0.1500f), proportionOfHeight (0.2302f)
+            g.fillRoundedRectangle (Rectangle<float> (proportionOfWidth (0.3579f), proportionOfHeight (0.4915f + .05f), proportionOfWidth (0.3894f) * (float)playerMovesComputerPiece.length() / 4.5f, proportionOfHeight (0.3422f - .1f)), 6.000f);
+        }
     }
     //[/UserPaint]
 }
@@ -285,8 +291,27 @@ bool GamePage::keyPressed (const KeyPress& key)
         return true;
     }
 
+    // Do we wait for the player to move coputer piece ?
+    if (waitForPlayerToMoveComputerPiece) {
+        if (computerBestMove[playerMovesComputerPiece.length()] == (char)key.getKeyCode()) {
+            playerMovesComputerPiece += (char)(key.getKeyCode());
+            this->repaint();
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
     int moveLength = playerCurrentMove.length();
 //    printf("Key press : %i / move length : %i \n", key.getKeyCode(), moveLength);
+
+    if (moveLength >= 4 && moveError) {
+        playerCurrentMove.clear();
+        moveLength = playerCurrentMove.length();
+        this->setMoveError(true);
+        this->repaint();
+    }
 
     if (key.getKeyCode() == 8) {
         if (moveLength > 0) {
@@ -377,6 +402,9 @@ void GamePage::realPlayerMove(String playerCurrentMove) {
 
         // now computer must play
         currentPlayerColor = currentPlayerColor == WHITE ? BLACK : WHITE;
+        // Wait 3 seconds minimum (12 / 4 = 3)
+        waitTillTicTac = ticTac + 12;
+
         this->cleanPieceImages(currentPlayerColor);
         stockfish->startSearchingBestMove();
         (*computerMoveOld)->setText((*computerMove)->getText(), dontSendNotification);
@@ -386,7 +414,8 @@ void GamePage::realPlayerMove(String playerCurrentMove) {
 
 bool GamePage::needsPromotionChoice(String playerCurrentMove) {
     char numberDest = playerCurrentMove.toRawUTF8()[3];
-    return board.getPiece(playerCurrentMove) == PAWN && (numberDest == '1' || numberDest == '8');
+    return board.getPiece(playerCurrentMove) == PAWN && 
+        ((realPlayerColor == BLACK && numberDest == '1') || (realPlayerColor == WHITE && numberDest == '8'));
 }
 
 void GamePage::setPromotionChoice(Piece piece) {
@@ -433,12 +462,31 @@ void GamePage::timerCallback() {
         // computer is thinking
 
         String bestMove = stockfish->checkBestMove();
-        if (bestMove.length() > 0) {
+        if (waitTillTicTac <= ticTac && bestMove.length() > 0) {
 #ifdef GP_DEBUG            
             printf(">> GamePage::timerCallback computer moved : %s \n", bestMove.toRawUTF8());
             printf(">> GamePage::getMate : %i \n", stockfish->getMate());
             printf(">> GamePage::getPonder : %s \n", stockfish->getPonder().toRawUTF8());
 #endif
+
+            // Wait for player to move computer piece
+            if (playerMovesComputerPiece != bestMove.substring(0, 4)) {
+                if (!waitForPlayerToMoveComputerPiece) {
+                    (*computerMove)->setText(bestMove.toLowerCase(), dontSendNotification);
+
+                    showCurrentMovingPiece(currentPlayerColor, bestMove.substring(0,2));
+                    showEventualTakenPiece(currentPlayerColor, bestMove);
+
+                    waitForPlayerToMoveComputerPiece = true;
+                    computerBestMove = bestMove;
+                }
+                return;
+            }
+
+            // clear to prepare for next time
+            waitForPlayerToMoveComputerPiece = false;
+            playerMovesComputerPiece.clear();
+
             // printf("Ponder >>>>>>>>>> %s \n", stockfish->getPonder().toRawUTF8());
             if (stockfish->getPonder().length() == 0) {
                 // Compute wins ?
@@ -458,14 +506,9 @@ void GamePage::timerCallback() {
             if (bestMove.length() == 5) {
                 pawnPromotion(bestMove);
             }
-            (*computerMove)->setText(bestMove.toLowerCase(), dontSendNotification);
-
-            showCurrentMovingPiece(currentPlayerColor, bestMove.substring(0,2));
-            showEventualTakenPiece(currentPlayerColor, bestMove);
 
             stockfish->addMove(bestMove);
             board.move(bestMove);
-
             currentPlayerColor = currentPlayerColor == WHITE ? BLACK : WHITE;
             repaint();
 
@@ -659,6 +702,7 @@ void GamePage::start(Color realPlayerColor) {
     (*computerMove)->setText("", dontSendNotification);
     (*playerMoveOld)->setText("", dontSendNotification);
     (*computerMoveOld)->setText("", dontSendNotification);
+    waitTillTicTac = 0;
 }
 
 
