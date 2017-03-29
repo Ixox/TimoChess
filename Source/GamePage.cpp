@@ -126,6 +126,7 @@ GamePage::GamePage ()
 
     //[Constructor] You can add your own custom stuff here..
     waitForPromotionChoice = false;
+    waitForPlayerToMoveComputerPiece = false;
     //[/Constructor]
 }
 
@@ -706,6 +707,10 @@ void GamePage::start(Color realPlayerColor) {
     (*playerMoveOld)->setText("", dontSendNotification);
     (*computerMoveOld)->setText("", dontSendNotification);
     waitTillTicTac = 0;
+
+    waitForPromotionChoice = false;
+    waitForPlayerToMoveComputerPiece = false;
+    playerMovesComputerPiece.clear();
 }
 
 
