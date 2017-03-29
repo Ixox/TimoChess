@@ -77,6 +77,8 @@ public:
     static const int vRacingKings_pngSize;
     static const char* vAtomic_png;
     static const int vAtomic_pngSize;
+    static const char* timochess_jpg;
+    static const int timochess_jpgSize;
 
 
 private:
@@ -96,6 +98,7 @@ private:
     ScopedPointer<ImageButton> vChess;
     ScopedPointer<ImageButton> vRacingKings;
     ScopedPointer<ImageButton> vAtomic;
+    Image cachedImage_timochess_jpg_1;
 
 
     //==============================================================================

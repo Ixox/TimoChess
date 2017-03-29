@@ -22,7 +22,7 @@
 
 #include "GamePage.h"
 
-// #define GP_DEBUG
+
 //[MiscUserDefs] You can add your own user definitions and misc code here...
 //[/MiscUserDefs]
 
@@ -207,6 +207,8 @@ void GamePage::paint (Graphics& g)
         if (currentPlayerColor == BLACK) {
             // proportionOfWidth (0.1967f), proportionOfHeight (0.5474f), proportionOfWidth (0.1500f), proportionOfHeight (0.2302f)
             g.fillRoundedRectangle (Rectangle<float> (proportionOfWidth (0.3579f), proportionOfHeight (0.4915f + .05f), proportionOfWidth (0.3894f) * (float)playerMovesComputerPiece.length() / 4.5f, proportionOfHeight (0.3422f - .1f)), 6.000f);
+        } else {
+            g.fillRoundedRectangle (Rectangle<float> (proportionOfWidth (0.3579f), proportionOfHeight (0.0622f + .05f), proportionOfWidth (0.3894f) * (float)playerMovesComputerPiece.length() / 4.5f, proportionOfHeight (0.3422f - .1f)), 6.000f);
         }
     }
     //[/UserPaint]
@@ -217,16 +219,16 @@ void GamePage::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    resetButton->setBounds (proportionOfWidth (0.0039f), proportionOfHeight (0.9946f) - proportionOfHeight (0.0863f), proportionOfWidth (0.0683f), proportionOfHeight (0.0863f));
-    whiteMove->setBounds (proportionOfWidth (0.3579f), proportionOfHeight (0.0622f), proportionOfWidth (0.3894f), proportionOfHeight (0.3422f));
-    blackMove->setBounds (proportionOfWidth (0.3579f), proportionOfHeight (0.4915f), proportionOfWidth (0.3894f), proportionOfHeight (0.3422f));
-    whiteMoveOld->setBounds (proportionOfWidth (0.7500f), proportionOfHeight (0.1431f), proportionOfWidth (0.2227f), proportionOfHeight (0.1967f));
-    blackMoveOld->setBounds (proportionOfWidth (0.7500f), proportionOfHeight (0.5537f), proportionOfWidth (0.2188f), proportionOfHeight (0.2100f));
-    whitePieceButton->setBounds (proportionOfWidth (0.1962f), proportionOfHeight (0.1120f), proportionOfWidth (0.1500f), proportionOfHeight (0.2364f));
-    blackPieceButton->setBounds (proportionOfWidth (0.1967f), proportionOfHeight (0.5474f), proportionOfWidth (0.1500f), proportionOfHeight (0.2302f));
-    boardButton->setBounds (proportionOfWidth (0.9243f), proportionOfHeight (0.8958f), proportionOfWidth (0.0669f), proportionOfHeight (0.0933f));
-    whiteTakesBlackButton->setBounds (proportionOfWidth (0.2596f), proportionOfHeight (0.2675f), proportionOfWidth (0.0983f), proportionOfHeight (0.1431f));
-    blackTakesWhiteButton->setBounds (proportionOfWidth (0.2596f), proportionOfHeight (0.6967f), proportionOfWidth (0.0983f), proportionOfHeight (0.1431f));
+    resetButton->setBounds (proportionOfWidth (0.0039f), proportionOfHeight (0.9946f) - proportionOfHeight (0.0862f), proportionOfWidth (0.0683f), proportionOfHeight (0.0862f));
+    whiteMove->setBounds (proportionOfWidth (0.3581f), proportionOfHeight (0.0622f), proportionOfWidth (0.3895f), proportionOfHeight (0.3419f));
+    blackMove->setBounds (proportionOfWidth (0.3581f), proportionOfHeight (0.4911f), proportionOfWidth (0.3895f), proportionOfHeight (0.3419f));
+    whiteMoveOld->setBounds (proportionOfWidth (0.7505f), proportionOfHeight (0.1430f), proportionOfWidth (0.2225f), proportionOfHeight (0.1966f));
+    blackMoveOld->setBounds (proportionOfWidth (0.7505f), proportionOfHeight (0.5540f), proportionOfWidth (0.2186f), proportionOfHeight (0.2098f));
+    whitePieceButton->setBounds (proportionOfWidth (0.1960f), proportionOfHeight (0.1119f), proportionOfWidth (0.1498f), proportionOfHeight (0.2362f));
+    blackPieceButton->setBounds (proportionOfWidth (0.1965f), proportionOfHeight (0.5478f), proportionOfWidth (0.1498f), proportionOfHeight (0.2300f));
+    boardButton->setBounds (proportionOfWidth (0.9244f), proportionOfHeight (0.8959f), proportionOfWidth (0.0668f), proportionOfHeight (0.0932f));
+    whiteTakesBlackButton->setBounds (proportionOfWidth (0.2598f), proportionOfHeight (0.2673f), proportionOfWidth (0.0982f), proportionOfHeight (0.1430f));
+    blackTakesWhiteButton->setBounds (proportionOfWidth (0.2598f), proportionOfHeight (0.6970f), proportionOfWidth (0.0982f), proportionOfHeight (0.1430f));
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -359,6 +361,7 @@ bool GamePage::keyPressed (const KeyPress& key)
 }
 
 
+
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
 
 
@@ -414,7 +417,7 @@ void GamePage::realPlayerMove(String playerCurrentMove) {
 
 bool GamePage::needsPromotionChoice(String playerCurrentMove) {
     char numberDest = playerCurrentMove.toRawUTF8()[3];
-    return board.getPiece(playerCurrentMove) == PAWN && 
+    return board.getPiece(playerCurrentMove) == PAWN &&
         ((realPlayerColor == BLACK && numberDest == '1') || (realPlayerColor == WHITE && numberDest == '8'));
 }
 
@@ -463,7 +466,7 @@ void GamePage::timerCallback() {
 
         String bestMove = stockfish->checkBestMove();
         if (waitTillTicTac <= ticTac && bestMove.length() > 0) {
-#ifdef GP_DEBUG            
+#ifdef GP_DEBUG
             printf(">> GamePage::timerCallback computer moved : %s \n", bestMove.toRawUTF8());
             printf(">> GamePage::getMate : %i \n", stockfish->getMate());
             printf(">> GamePage::getPonder : %s \n", stockfish->getPonder().toRawUTF8());
@@ -501,7 +504,7 @@ void GamePage::timerCallback() {
                     return;
                 }
             }
-            
+
             // Length 5 means pawn promotion
             if (bestMove.length() == 5) {
                 pawnPromotion(bestMove);
@@ -736,61 +739,61 @@ BEGIN_JUCER_METADATA
            opacity="1" mode="1"/>
   </BACKGROUND>
   <IMAGEBUTTON name="reset button" id="34eb5f3819ff3fda" memberName="resetButton"
-               virtualName="" explicitFocusOrder="0" pos="0.393% 99.456%r 6.834% 8.631%"
+               virtualName="" explicitFocusOrder="0" pos="0.391% 99.444%r 6.836% 8.611%"
                buttonText="RESET" connectedEdges="0" needsCallback="1" radioGroupId="0"
                keepProportions="1" resourceNormal="reset_png" opacityNormal="1"
                colourNormal="0" resourceOver="" opacityOver="1" colourOver="0"
                resourceDown="" opacityDown="1" colourDown="0"/>
   <LABEL name="whiteMove label" id="49edb2e62c665264" memberName="whiteMove"
-         virtualName="" explicitFocusOrder="0" pos="35.792% 6.221% 38.938% 34.215%"
+         virtualName="" explicitFocusOrder="0" pos="35.82% 6.25% 38.945% 34.167%"
          textCol="ff266163" edTextCol="ff000000" edBkgCol="0" labelText="C2C4"
          editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
          fontname="OpenDyslexicAlta" fontsize="190" bold="1" italic="0"
          justification="33"/>
   <LABEL name="blackMove label" id="4ee3256afca77a83" memberName="blackMove"
-         virtualName="" explicitFocusOrder="0" pos="35.792% 49.145% 38.938% 34.215%"
+         virtualName="" explicitFocusOrder="0" pos="35.82% 49.097% 38.945% 34.167%"
          textCol="ff266163" edTextCol="ff000000" edBkgCol="0" labelText="E7E5"
          editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
          fontname="OpenDyslexicAlta" fontsize="190" bold="1" italic="0"
          justification="33"/>
   <LABEL name="whiteMoveOld label" id="a1067eed02d5360f" memberName="whiteMoveOld"
-         virtualName="" explicitFocusOrder="0" pos="75.025% 14.308% 22.271% 19.673%"
+         virtualName="" explicitFocusOrder="0" pos="75.039% 14.306% 22.266% 19.653%"
          textCol="ff61a5a8" edTextCol="ff000000" edBkgCol="0" labelText="C2C4&#10;"
          editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
          fontname="OpenDyslexicAlta" fontsize="120" bold="1" italic="0"
          justification="33"/>
   <LABEL name="blackMove label" id="7b9defce5f0efb46" memberName="blackMoveOld"
-         virtualName="" explicitFocusOrder="0" pos="75.025% 55.365% 21.878% 20.995%"
+         virtualName="" explicitFocusOrder="0" pos="75.039% 55.417% 21.875% 20.972%"
          textCol="ff65a4a6" edTextCol="ff000000" edBkgCol="0" labelText="E7E5&#10;"
          editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
          fontname="OpenDyslexicAlta" fontsize="120" bold="1" italic="0"
          justification="33"/>
   <IMAGEBUTTON name="white piece button" id="885cfc3610012de7" memberName="whitePieceButton"
-               virtualName="" explicitFocusOrder="0" pos="19.617% 11.198% 14.995% 23.639%"
+               virtualName="" explicitFocusOrder="0" pos="19.609% 11.181% 14.961% 23.611%"
                buttonText="white piece" connectedEdges="0" needsCallback="1"
                radioGroupId="0" keepProportions="1" resourceNormal="BinaryData::wPawn_png"
                opacityNormal="1" colourNormal="0" resourceOver="" opacityOver="1"
                colourOver="0" resourceDown="" opacityDown="1" colourDown="0"/>
   <IMAGEBUTTON name="black piece button" id="110fca52e356decf" memberName="blackPieceButton"
-               virtualName="" explicitFocusOrder="0" pos="19.666% 54.743% 14.995% 23.017%"
+               virtualName="" explicitFocusOrder="0" pos="19.648% 54.792% 14.961% 22.986%"
                buttonText="black piece" connectedEdges="0" needsCallback="1"
                radioGroupId="0" keepProportions="1" resourceNormal="BinaryData::bPawn_png"
                opacityNormal="1" colourNormal="0" resourceOver="" opacityOver="1"
                colourOver="0" resourceDown="" opacityDown="1" colourDown="0"/>
   <IMAGEBUTTON name="board button" id="26ef0dc5c974563e" memberName="boardButton"
-               virtualName="" explicitFocusOrder="0" pos="92.429% 89.58% 6.686% 9.331%"
+               virtualName="" explicitFocusOrder="0" pos="92.422% 89.583% 6.68% 9.306%"
                buttonText="board button" connectedEdges="0" needsCallback="1"
                radioGroupId="0" keepProportions="0" resourceNormal="showBoard_png"
                opacityNormal="1" colourNormal="0" resourceOver="" opacityOver="1"
                colourOver="0" resourceDown="" opacityDown="1" colourDown="0"/>
   <IMAGEBUTTON name="whiteTakesBlack button" id="96d88a1472cc9d50" memberName="whiteTakesBlackButton"
-               virtualName="" explicitFocusOrder="0" pos="25.959% 26.75% 9.833% 14.308%"
+               virtualName="" explicitFocusOrder="0" pos="25.977% 26.736% 9.805% 14.306%"
                buttonText="whiteTakesBlack piece" connectedEdges="0" needsCallback="1"
                radioGroupId="0" keepProportions="1" resourceNormal="" opacityNormal="1"
                colourNormal="0" resourceOver="" opacityOver="1" colourOver="0"
                resourceDown="" opacityDown="1" colourDown="0"/>
   <IMAGEBUTTON name="blackTakesWhite button" id="33d361b30d19dc35" memberName="blackTakesWhiteButton"
-               virtualName="" explicitFocusOrder="0" pos="25.959% 69.673% 9.833% 14.308%"
+               virtualName="" explicitFocusOrder="0" pos="25.977% 69.722% 9.805% 14.306%"
                buttonText="blackTakesWhite piece" connectedEdges="0" needsCallback="1"
                radioGroupId="0" keepProportions="1" resourceNormal="" opacityNormal="1"
                colourNormal="0" resourceOver="" opacityOver="1" colourOver="0"
