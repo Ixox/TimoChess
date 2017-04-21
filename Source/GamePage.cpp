@@ -95,7 +95,7 @@ GamePage::GamePage ()
     addAndMakeVisible (boardButton = new ImageButton ("board button"));
     boardButton->addListener (this);
 
-    boardButton->setImages (false, true, false,
+    boardButton->setImages (false, true, true,
                             ImageCache::getFromMemory (showBoard_png, showBoard_pngSize), 1.000f, Colour (0x00000000),
                             Image(), 1.000f, Colour (0x00000000),
                             Image(), 1.000f, Colour (0x00000000));
@@ -115,6 +115,14 @@ GamePage::GamePage ()
                                       Image(), 1.000f, Colour (0x00000000),
                                       Image(), 1.000f, Colour (0x00000000),
                                       Image(), 1.000f, Colour (0x00000000));
+    addAndMakeVisible (cancelButton = new ImageButton ("cancel button"));
+    cancelButton->setButtonText (TRANS("cancel"));
+    cancelButton->addListener (this);
+
+    cancelButton->setImages (false, true, true,
+                             ImageCache::getFromMemory (cancel_png2, cancel_png2Size), 1.000f, Colour (0x0037ed63),
+                             Image(), 1.000f, Colour (0x00000000),
+                             Image(), 1.000f, Colour (0x00000000));
     drawable1 = Drawable::createFromImageData (BinaryData::human_png, BinaryData::human_pngSize);
     drawable2 = Drawable::createFromImageData (BinaryData::rpi_png, BinaryData::rpi_pngSize);
 
@@ -145,6 +153,7 @@ GamePage::~GamePage()
     boardButton = nullptr;
     whiteTakesBlackButton = nullptr;
     blackTakesWhiteButton = nullptr;
+    cancelButton = nullptr;
     drawable1 = nullptr;
     drawable2 = nullptr;
 
@@ -199,17 +208,17 @@ void GamePage::paint (Graphics& g)
         g.setColour (Colours::red);
     }
     if (currentPlayerColor == WHITE) {
-        g.drawRoundedRectangle (Rectangle<float> (proportionOfWidth (0.005f), proportionOfHeight (0.02f), proportionOfWidth (0.99f), proportionOfHeight (0.43f)), 6.000f, 10);
+        g.drawRoundedRectangle (Rectangle<float> (proportionOfWidth (0.005f), proportionOfHeight (0.04f), proportionOfWidth (0.99f), proportionOfHeight (0.39)), 6.000f, 16);
     } else {
-        g.drawRoundedRectangle (Rectangle<float> (proportionOfWidth (0.005f), proportionOfHeight (0.45f), proportionOfWidth (0.99f), proportionOfHeight (0.43f)), 6.000f, 10);
+        g.drawRoundedRectangle (Rectangle<float> (proportionOfWidth (0.005f), proportionOfHeight (0.47f), proportionOfWidth (0.99f), proportionOfHeight (0.39f)), 6.000f, 16);
     }
     if (waitForPlayerToMoveComputerPiece) {
         g.setColour (Colours::lightgreen);
         if (currentPlayerColor == BLACK) {
             // proportionOfWidth (0.1967f), proportionOfHeight (0.5474f), proportionOfWidth (0.1500f), proportionOfHeight (0.2302f)
-            g.fillRoundedRectangle (Rectangle<float> (proportionOfWidth (0.3579f), proportionOfHeight (0.4915f + .05f), proportionOfWidth (0.3894f) * (float)playerMovesComputerPiece.length() / 4.5f, proportionOfHeight (0.3422f - .1f)), 6.000f);
+            g.fillRoundedRectangle (Rectangle<float> (proportionOfWidth (0.3579f), proportionOfHeight (0.4915f + .05f), proportionOfWidth (0.3894f) * (float)playerMovesComputerPiece.length() / 4.5f, proportionOfHeight (0.3422f - .1f)), 6);
         } else {
-            g.fillRoundedRectangle (Rectangle<float> (proportionOfWidth (0.3579f), proportionOfHeight (0.0622f + .05f), proportionOfWidth (0.3894f) * (float)playerMovesComputerPiece.length() / 4.5f, proportionOfHeight (0.3422f - .1f)), 6.000f);
+            g.fillRoundedRectangle (Rectangle<float> (proportionOfWidth (0.3579f), proportionOfHeight (0.0622f + .05f), proportionOfWidth (0.3894f) * (float)playerMovesComputerPiece.length() / 4.5f, proportionOfHeight (0.3422f - .1f)), 6);
         }
     }
     //[/UserPaint]
@@ -220,16 +229,17 @@ void GamePage::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    resetButton->setBounds (proportionOfWidth (0.0039f), proportionOfHeight (0.9946f) - proportionOfHeight (0.0862f), proportionOfWidth (0.0683f), proportionOfHeight (0.0862f));
-    whiteMove->setBounds (proportionOfWidth (0.3581f), proportionOfHeight (0.0622f), proportionOfWidth (0.3895f), proportionOfHeight (0.3419f));
-    blackMove->setBounds (proportionOfWidth (0.3581f), proportionOfHeight (0.4911f), proportionOfWidth (0.3895f), proportionOfHeight (0.3419f));
-    whiteMoveOld->setBounds (proportionOfWidth (0.7505f), proportionOfHeight (0.1430f), proportionOfWidth (0.2225f), proportionOfHeight (0.1966f));
-    blackMoveOld->setBounds (proportionOfWidth (0.7505f), proportionOfHeight (0.5540f), proportionOfWidth (0.2186f), proportionOfHeight (0.2098f));
-    whitePieceButton->setBounds (proportionOfWidth (0.1960f), proportionOfHeight (0.1119f), proportionOfWidth (0.1498f), proportionOfHeight (0.2362f));
-    blackPieceButton->setBounds (proportionOfWidth (0.1965f), proportionOfHeight (0.5478f), proportionOfWidth (0.1498f), proportionOfHeight (0.2300f));
-    boardButton->setBounds (proportionOfWidth (0.9244f), proportionOfHeight (0.8959f), proportionOfWidth (0.0668f), proportionOfHeight (0.0932f));
-    whiteTakesBlackButton->setBounds (proportionOfWidth (0.2598f), proportionOfHeight (0.2673f), proportionOfWidth (0.0982f), proportionOfHeight (0.1430f));
-    blackTakesWhiteButton->setBounds (proportionOfWidth (0.2598f), proportionOfHeight (0.6970f), proportionOfWidth (0.0982f), proportionOfHeight (0.1430f));
+    resetButton->setBounds (proportionOfWidth (0.0079f), proportionOfHeight (0.9950f) - proportionOfHeight (0.1100f), proportionOfWidth (0.1100f), proportionOfHeight (0.1100f));
+    whiteMove->setBounds (proportionOfWidth (0.3584f), proportionOfHeight (0.0622f), proportionOfWidth (0.3894f), proportionOfHeight (0.3414f));
+    blackMove->setBounds (proportionOfWidth (0.3584f), proportionOfHeight (0.4907f), proportionOfWidth (0.3894f), proportionOfHeight (0.3414f));
+    whiteMoveOld->setBounds (proportionOfWidth (0.7503f), proportionOfHeight (0.1431f), proportionOfWidth (0.2227f), proportionOfHeight (0.1967f));
+    blackMoveOld->setBounds (proportionOfWidth (0.7503f), proportionOfHeight (0.5544f), proportionOfWidth (0.2188f), proportionOfHeight (0.2100f));
+    whitePieceButton->setBounds (proportionOfWidth (0.1962f), proportionOfHeight (0.1120f), proportionOfWidth (0.1495f), proportionOfHeight (0.2364f));
+    blackPieceButton->setBounds (proportionOfWidth (0.1967f), proportionOfHeight (0.5482f), proportionOfWidth (0.1495f), proportionOfHeight (0.2302f));
+    boardButton->setBounds (proportionOfWidth (0.8771f), proportionOfHeight (0.8834f), proportionOfWidth (0.1101f), proportionOfHeight (0.1096f));
+    whiteTakesBlackButton->setBounds (proportionOfWidth (0.2596f), proportionOfHeight (0.2675f), proportionOfWidth (0.0978f), proportionOfHeight (0.1431f));
+    blackTakesWhiteButton->setBounds (proportionOfWidth (0.2596f), proportionOfHeight (0.6975f), proportionOfWidth (0.0978f), proportionOfHeight (0.1431f));
+    cancelButton->setBounds (proportionOfWidth (0.7630f), proportionOfHeight (0.9950f) - proportionOfHeight (0.1100f), proportionOfWidth (0.1100f), proportionOfHeight (0.1100f));
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -274,6 +284,12 @@ void GamePage::buttonClicked (Button* buttonThatWasClicked)
         //[UserButtonCode_blackTakesWhiteButton] -- add your button handler code here..
         //[/UserButtonCode_blackTakesWhiteButton]
     }
+    else if (buttonThatWasClicked == cancelButton)
+    {
+        //[UserButtonCode_cancelButton] -- add your button handler code here..
+        cancelPreviousTurn();
+        //[/UserButtonCode_cancelButton]
+    }
 
     //[UserbuttonClicked_Post]
     //[/UserbuttonClicked_Post]
@@ -296,6 +312,13 @@ bool GamePage::keyPressed (const KeyPress& key)
 
     // Do we wait for the player to move coputer piece ?
     if (waitForPlayerToMoveComputerPiece) {
+        // W pressed
+        if (playerCanAskToCancelPreviousTurn  && (char)key.getKeyCode() == 'w') {
+            playerAskedToCancelPreviousTurn = true;
+            playerCanAskToCancelPreviousTurn = false;
+            return false;
+        }
+        // Player moves computer piece ask expected
         if (computerBestMove[playerMovesComputerPiece.length()] == (char)key.getKeyCode()) {
             playerMovesComputerPiece += (char)(key.getKeyCode());
             this->repaint();
@@ -397,8 +420,8 @@ void GamePage::realPlayerMove(String playerCurrentMove) {
         displayPlayerCurrentMove();
         cleanPieceImages(realPlayerColor);
         // move error must be called here (not before)
-        this->setMoveError(true);
-        this->repaint();
+        setMoveError(true);
+        repaint();
     } else {
         // Every thing is fine :)
         showEventualTakenPiece(currentPlayerColor, playerCurrentMove);
@@ -409,7 +432,7 @@ void GamePage::realPlayerMove(String playerCurrentMove) {
         // Wait 3 seconds minimum (12 / 4 = 3)
         waitTillTicTac = ticTac + 12;
 
-        this->cleanPieceImages(currentPlayerColor);
+        cleanPieceImages(currentPlayerColor);
         stockfish->startSearchingBestMove();
         (*computerMoveOld)->setText((*computerMove)->getText(), dontSendNotification);
         repaint();
@@ -482,7 +505,15 @@ void GamePage::timerCallback() {
                     showEventualTakenPiece(currentPlayerColor, bestMove);
 
                     waitForPlayerToMoveComputerPiece = true;
+                    // Player can cancel previous turn during his/her turn
+                    playerCanAskToCancelPreviousTurn = true;
+                    cancelButton->setEnabled(true);
+
                     computerBestMove = bestMove;
+                }
+                if (playerAskedToCancelPreviousTurn) {
+                    playerAskedToCancelPreviousTurn = false;
+                    cancelPreviousTurn();
                 }
                 return;
             }
@@ -514,6 +545,9 @@ void GamePage::timerCallback() {
             stockfish->addMove(bestMove);
             board.move(bestMove);
             currentPlayerColor = currentPlayerColor == WHITE ? BLACK : WHITE;
+            // Cannot cancel previous turn during player's turn
+            playerCanAskToCancelPreviousTurn = false;
+            cancelButton->setEnabled(false);
             repaint();
 
             (*playerMoveOld)->setText(playerCurrentMove, dontSendNotification);
@@ -563,6 +597,35 @@ void GamePage::setMoveError(bool error) {
 }
 
 
+void GamePage::cancelPreviousTurn() {
+    // Disable button
+    cancelButton->setEnabled(false);
+
+    stockfish->cancelLastMove();
+    board.cancelLastMove();
+
+    // Back to current Player
+    this->currentPlayerColor = realPlayerColor;
+
+    cleanPieceImages(WHITE);
+    cleanPieceImages(BLACK);
+
+    // Clean taken pieces from previous play
+    playerCurrentMove.clear();
+    displayPlayerCurrentMove();
+
+    String previousComputerMove = (*computerMoveOld)->getText();
+
+    (*computerMove)->setText(previousComputerMove, dontSendNotification);
+    (*playerMoveOld)->setText("", dontSendNotification);
+    (*computerMoveOld)->setText("", dontSendNotification);
+
+    waitForPromotionChoice = false;
+    waitForPlayerToMoveComputerPiece = false;
+    playerMovesComputerPiece.clear();
+    playerAskedToCancelPreviousTurn = false;
+    playerCanAskToCancelPreviousTurn = false;
+}
 
 void GamePage::cleanPieceImages(Color color) {
     ScopedPointer<ImageButton> *imageToUpdate, *imageToUpdate2;
@@ -583,6 +646,7 @@ void GamePage::cleanPieceImages(Color color) {
                     Image(), 1.000f, Colour (0x00000000));
 
 }
+
 
 void GamePage::showEventualTakenPiece(Color color, String move) {
     ScopedPointer<ImageButton> *imageToUpdate;
@@ -685,9 +749,6 @@ void GamePage::start(Color realPlayerColor) {
         computerMoveOld = &blackMoveOld;
     }
 
-    this->showCurrentMovingPiece(WHITE, "");
-    this->showCurrentMovingPiece(BLACK, "");
-
     if (this->stockfish->getStartingFen().length() > 0) {
         board.initWithFen(this->stockfish->getStartingFen());
     } else {
@@ -708,9 +769,16 @@ void GamePage::start(Color realPlayerColor) {
     (*computerMoveOld)->setText("", dontSendNotification);
     waitTillTicTac = 0;
 
+    this->setMoveError(false);
     waitForPromotionChoice = false;
     waitForPlayerToMoveComputerPiece = false;
     playerMovesComputerPiece.clear();
+    playerAskedToCancelPreviousTurn = false;
+    playerCanAskToCancelPreviousTurn = false;
+    cancelButton->setEnabled(false);
+
+    cleanPieceImages(WHITE);
+    cleanPieceImages(BLACK);
 }
 
 
@@ -744,64 +812,70 @@ BEGIN_JUCER_METADATA
            opacity="1" mode="1"/>
   </BACKGROUND>
   <IMAGEBUTTON name="reset button" id="34eb5f3819ff3fda" memberName="resetButton"
-               virtualName="" explicitFocusOrder="0" pos="0.391% 99.444%r 6.836% 8.611%"
+               virtualName="" explicitFocusOrder="0" pos="0.787% 99.533%r 11.013% 10.964%"
                buttonText="RESET" connectedEdges="0" needsCallback="1" radioGroupId="0"
                keepProportions="1" resourceNormal="reset_png" opacityNormal="1"
                colourNormal="0" resourceOver="" opacityOver="1" colourOver="0"
                resourceDown="" opacityDown="1" colourDown="0"/>
   <LABEL name="whiteMove label" id="49edb2e62c665264" memberName="whiteMove"
-         virtualName="" explicitFocusOrder="0" pos="35.82% 6.25% 38.945% 34.167%"
+         virtualName="" explicitFocusOrder="0" pos="35.841% 6.221% 38.938% 34.137%"
          textCol="ff266163" edTextCol="ff000000" edBkgCol="0" labelText="C2C4"
          editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
          fontname="OpenDyslexicAlta" fontsize="190" bold="1" italic="0"
          justification="33"/>
   <LABEL name="blackMove label" id="4ee3256afca77a83" memberName="blackMove"
-         virtualName="" explicitFocusOrder="0" pos="35.82% 49.097% 38.945% 34.167%"
+         virtualName="" explicitFocusOrder="0" pos="35.841% 49.067% 38.938% 34.137%"
          textCol="ff266163" edTextCol="ff000000" edBkgCol="0" labelText="E7E5"
          editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
          fontname="OpenDyslexicAlta" fontsize="190" bold="1" italic="0"
          justification="33"/>
   <LABEL name="whiteMoveOld label" id="a1067eed02d5360f" memberName="whiteMoveOld"
-         virtualName="" explicitFocusOrder="0" pos="75.039% 14.306% 22.266% 19.653%"
+         virtualName="" explicitFocusOrder="0" pos="75.025% 14.308% 22.271% 19.673%"
          textCol="ff61a5a8" edTextCol="ff000000" edBkgCol="0" labelText="C2C4&#10;"
          editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
          fontname="OpenDyslexicAlta" fontsize="120" bold="1" italic="0"
          justification="33"/>
   <LABEL name="blackMove label" id="7b9defce5f0efb46" memberName="blackMoveOld"
-         virtualName="" explicitFocusOrder="0" pos="75.039% 55.417% 21.875% 20.972%"
+         virtualName="" explicitFocusOrder="0" pos="75.025% 55.443% 21.878% 20.995%"
          textCol="ff65a4a6" edTextCol="ff000000" edBkgCol="0" labelText="E7E5&#10;"
          editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
          fontname="OpenDyslexicAlta" fontsize="120" bold="1" italic="0"
          justification="33"/>
   <IMAGEBUTTON name="white piece button" id="885cfc3610012de7" memberName="whitePieceButton"
-               virtualName="" explicitFocusOrder="0" pos="19.609% 11.181% 14.961% 23.611%"
+               virtualName="" explicitFocusOrder="0" pos="19.617% 11.198% 14.946% 23.639%"
                buttonText="white piece" connectedEdges="0" needsCallback="1"
                radioGroupId="0" keepProportions="1" resourceNormal="BinaryData::wPawn_png"
                opacityNormal="1" colourNormal="0" resourceOver="" opacityOver="1"
                colourOver="0" resourceDown="" opacityDown="1" colourDown="0"/>
   <IMAGEBUTTON name="black piece button" id="110fca52e356decf" memberName="blackPieceButton"
-               virtualName="" explicitFocusOrder="0" pos="19.648% 54.792% 14.961% 22.986%"
+               virtualName="" explicitFocusOrder="0" pos="19.666% 54.821% 14.946% 23.017%"
                buttonText="black piece" connectedEdges="0" needsCallback="1"
                radioGroupId="0" keepProportions="1" resourceNormal="BinaryData::bPawn_png"
                opacityNormal="1" colourNormal="0" resourceOver="" opacityOver="1"
                colourOver="0" resourceDown="" opacityDown="1" colourDown="0"/>
   <IMAGEBUTTON name="board button" id="26ef0dc5c974563e" memberName="boardButton"
-               virtualName="" explicitFocusOrder="0" pos="92.422% 89.583% 6.68% 9.306%"
+               virtualName="" explicitFocusOrder="0" pos="87.709% 88.336% 11.013% 10.964%"
                buttonText="board button" connectedEdges="0" needsCallback="1"
-               radioGroupId="0" keepProportions="0" resourceNormal="showBoard_png"
+               radioGroupId="0" keepProportions="1" resourceNormal="showBoard_png"
                opacityNormal="1" colourNormal="0" resourceOver="" opacityOver="1"
                colourOver="0" resourceDown="" opacityDown="1" colourDown="0"/>
   <IMAGEBUTTON name="whiteTakesBlack button" id="96d88a1472cc9d50" memberName="whiteTakesBlackButton"
-               virtualName="" explicitFocusOrder="0" pos="25.977% 26.736% 9.805% 14.306%"
+               virtualName="" explicitFocusOrder="0" pos="25.959% 26.75% 9.784% 14.308%"
                buttonText="whiteTakesBlack piece" connectedEdges="0" needsCallback="1"
                radioGroupId="0" keepProportions="1" resourceNormal="" opacityNormal="1"
                colourNormal="0" resourceOver="" opacityOver="1" colourOver="0"
                resourceDown="" opacityDown="1" colourDown="0"/>
   <IMAGEBUTTON name="blackTakesWhite button" id="33d361b30d19dc35" memberName="blackTakesWhiteButton"
-               virtualName="" explicitFocusOrder="0" pos="25.977% 69.722% 9.805% 14.306%"
+               virtualName="" explicitFocusOrder="0" pos="25.959% 69.751% 9.784% 14.308%"
                buttonText="blackTakesWhite piece" connectedEdges="0" needsCallback="1"
                radioGroupId="0" keepProportions="1" resourceNormal="" opacityNormal="1"
                colourNormal="0" resourceOver="" opacityOver="1" colourOver="0"
+               resourceDown="" opacityDown="1" colourDown="0"/>
+  <IMAGEBUTTON name="cancel button" id="5a512230c69e1900" memberName="cancelButton"
+               virtualName="" explicitFocusOrder="0" pos="76.303% 99.533%r 11.013% 10.964%"
+               buttonText="cancel" connectedEdges="0" needsCallback="1" radioGroupId="0"
+               keepProportions="1" resourceNormal="cancel_png2" opacityNormal="1"
+               colourNormal="37ed63" resourceOver="" opacityOver="1" colourOver="0"
                resourceDown="" opacityDown="1" colourDown="0"/>
 </JUCER_COMPONENT>
 
@@ -883,6 +957,80 @@ static const unsigned char resource_GamePage_showBoard_png[] = { 137,80,78,71,13
 
 const char* GamePage::showBoard_png = (const char*) resource_GamePage_showBoard_png;
 const int GamePage::showBoard_pngSize = 2245;
+
+// JUCER_RESOURCE: cancel_png, 1447, "images/cancel.png"
+static const unsigned char resource_GamePage_cancel_png[] = { 137,80,78,71,13,10,26,10,0,0,0,13,73,72,68,82,0,0,0,128,0,0,0,128,8,3,0,0,0,244,224,145,249,0,0,2,253,80,76,84,69,1,0,2,1,0,2,1,0,2,1,0,2,
+1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,
+0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,
+2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,
+1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,
+0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,
+2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,
+1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,
+0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,122,35,119,6,0,0,0,1,116,82,78,83,0,64,230,216,102,0,0,0,1,98,75,71,68,0,136,5,29,72,0,0,0,9,112,
+72,89,115,0,0,143,43,0,0,143,43,1,101,73,216,158,0,0,0,7,116,73,77,69,7,225,4,21,20,56,16,146,140,196,217,0,0,2,35,73,68,65,84,120,218,237,155,189,75,131,49,16,198,239,95,119,18,156,5,17,55,17,7,191,157,
+11,234,238,226,7,232,96,173,93,196,65,90,176,32,212,214,62,40,74,93,204,181,151,55,185,187,150,228,89,155,247,158,95,46,111,147,75,210,18,85,85,45,175,46,240,95,143,86,230,152,165,109,101,243,54,4,82,
+115,63,132,84,3,243,204,235,167,1,241,114,182,207,137,128,230,202,97,223,67,146,60,187,159,131,96,136,12,154,235,178,11,92,42,117,95,66,48,109,117,174,230,15,156,240,246,3,30,244,5,25,197,249,143,249,
+86,200,43,217,59,174,231,207,16,240,141,0,19,2,182,17,96,66,192,182,1,108,8,184,38,128,17,1,211,66,26,238,225,47,208,115,67,130,112,131,83,65,160,118,224,133,186,19,60,247,41,1,152,27,101,143,157,214,
+214,34,83,16,252,60,113,105,137,122,60,244,113,250,226,58,145,71,208,90,219,197,175,129,94,105,33,12,163,88,218,200,2,197,216,191,70,214,82,45,62,84,175,9,64,214,106,178,1,64,230,122,54,26,32,119,69,29,
+11,144,191,166,143,3,80,216,85,68,1,108,145,26,129,193,214,166,151,14,160,179,181,27,139,1,180,54,151,118,0,7,105,0,122,199,11,118,0,180,220,0,191,58,82,34,200,180,195,182,1,200,63,35,91,158,61,6,195,
+237,196,23,165,217,199,0,190,41,208,43,203,43,128,176,70,182,4,8,90,13,189,1,64,157,165,251,26,120,3,120,79,198,111,10,0,100,148,0,74,171,11,127,52,74,42,9,158,248,30,245,77,174,94,110,76,111,56,163,134,
+160,2,84,128,10,224,8,176,89,71,160,32,128,190,55,64,208,191,91,208,8,160,116,0,112,187,243,178,19,80,208,8,120,39,0,11,10,80,76,2,22,213,31,165,251,163,116,127,19,128,150,179,255,172,147,134,117,125,
+251,51,245,91,160,230,221,55,240,135,171,255,251,188,163,166,15,77,247,142,254,89,23,171,21,152,156,181,69,15,184,178,127,244,143,190,125,123,95,253,51,251,111,56,251,147,183,191,247,95,94,168,27,101,
+127,77,190,9,112,88,242,244,167,127,103,123,162,99,161,253,173,87,217,161,95,125,56,219,11,8,70,164,172,137,115,229,59,43,5,247,70,123,207,113,208,125,213,240,0,148,60,47,0,166,186,250,246,29,236,83,85,
+85,51,125,1,192,33,216,172,234,61,189,109,0,0,0,0,73,69,78,68,174,66,96,130,0,0};
+
+const char* GamePage::cancel_png = (const char*) resource_GamePage_cancel_png;
+const int GamePage::cancel_pngSize = 1447;
+
+// JUCER_RESOURCE: cancel_png2, 2481, "images/cancel.png"
+static const unsigned char resource_GamePage_cancel_png2[] = { 137,80,78,71,13,10,26,10,0,0,0,13,73,72,68,82,0,0,0,128,0,0,0,128,8,6,0,0,0,195,62,97,203,0,0,0,6,98,75,71,68,0,255,0,255,0,255,160,189,167,
+147,0,0,0,9,112,72,89,115,0,0,143,43,0,0,143,43,1,101,73,216,158,0,0,0,7,116,73,77,69,7,225,4,21,21,0,28,141,103,94,62,0,0,9,62,73,68,65,84,120,218,237,157,75,112,21,199,21,134,191,123,165,93,58,72,36,
+202,206,68,72,200,142,179,114,48,72,60,108,47,92,197,67,209,42,89,33,134,71,121,235,128,5,113,47,83,73,132,147,236,50,41,27,80,101,157,24,181,196,62,133,177,33,43,7,27,33,8,246,34,85,152,146,165,16,217,
+59,18,233,194,236,82,178,178,152,190,112,81,36,184,143,233,185,221,211,253,87,169,10,81,208,221,51,231,159,243,234,211,125,32,32,32,32,32,32,32,96,45,226,36,42,252,51,150,124,16,162,20,170,246,247,30,
+96,160,230,167,138,181,191,47,3,215,128,14,253,251,92,245,71,10,117,127,163,241,3,1,44,18,120,156,68,187,129,17,96,8,232,5,94,204,112,170,59,192,61,224,6,112,73,10,117,221,69,66,148,10,38,252,1,224,8,
+240,99,96,87,27,150,48,3,124,0,76,74,161,230,2,1,242,19,250,105,32,2,54,91,180,180,37,64,1,239,74,161,230,108,213,12,37,71,133,190,25,24,3,78,89,38,244,141,80,1,126,41,133,58,23,8,208,130,93,215,54,253,
+77,224,184,195,74,107,18,56,33,133,170,216,160,21,202,142,132,97,131,113,18,221,0,62,117,92,248,104,31,101,57,78,162,25,96,176,221,225,102,201,114,2,244,1,23,171,47,170,160,184,5,188,46,133,122,24,52,
+192,147,194,87,192,124,193,133,15,176,3,120,16,39,209,89,253,220,37,47,53,64,141,157,31,3,222,3,86,241,32,81,181,14,14,72,161,174,248,168,1,186,226,36,186,169,133,143,167,194,7,248,40,78,162,143,242,210,
+6,101,75,190,254,195,58,110,222,65,0,192,190,56,137,86,129,125,185,154,128,53,225,86,68,154,66,173,102,212,254,6,44,2,74,10,245,151,86,67,24,237,249,118,0,239,3,135,131,204,55,196,132,20,234,164,169,144,
+177,84,35,144,18,208,15,76,213,225,120,205,2,135,165,80,95,54,41,252,18,176,9,184,13,244,5,25,63,19,95,73,161,182,196,73,84,146,66,173,102,78,0,45,144,237,192,205,6,108,239,10,112,76,10,53,213,4,1,158,
+211,218,36,160,62,84,29,226,94,96,49,75,18,148,181,42,238,111,80,248,85,245,173,226,36,250,126,35,137,140,56,137,14,5,225,55,173,169,239,1,47,101,234,4,106,187,114,165,5,175,251,31,245,218,38,45,252,233,
+32,207,150,112,91,191,199,108,152,21,39,209,113,224,79,45,142,243,115,210,93,175,32,252,252,48,42,133,186,152,69,24,248,147,12,22,115,34,8,63,119,76,103,161,9,202,192,79,51,88,204,64,16,126,219,72,208,
+82,8,93,210,9,135,44,240,67,41,212,157,53,194,63,76,90,20,17,96,14,43,218,137,111,42,58,232,204,112,33,221,107,226,252,45,164,73,30,91,49,67,186,189,92,225,113,193,231,218,231,217,11,124,163,53,92,47,
+240,170,133,207,209,161,163,131,238,56,137,42,141,38,139,58,179,94,141,206,88,173,198,73,116,207,162,151,180,4,92,0,46,1,55,107,171,122,159,129,203,235,60,95,15,48,172,127,14,2,61,182,68,7,192,243,90,
+35,180,143,0,58,149,188,72,251,119,243,158,168,201,203,240,249,238,107,50,93,208,132,24,0,222,161,253,233,236,62,173,113,27,170,46,201,210,7,216,35,133,186,30,39,209,52,112,168,141,47,98,22,24,151,66,
+93,202,123,226,56,137,142,2,227,192,182,54,62,255,41,41,212,217,70,162,128,172,240,74,156,68,151,219,40,252,89,96,72,10,53,164,85,125,59,112,65,10,53,64,186,137,54,219,166,53,252,33,78,162,109,245,102,
+103,179,36,192,239,181,77,204,27,9,176,83,11,126,182,106,134,218,129,154,121,103,245,122,134,181,41,202,219,41,188,82,239,59,176,186,40,180,14,156,145,66,125,155,180,174,206,154,186,251,154,117,124,8,
+124,23,200,187,28,188,47,78,162,241,188,125,128,60,241,37,176,95,10,181,224,202,130,227,36,218,14,252,61,103,231,184,31,88,120,218,135,225,162,6,152,2,126,0,44,56,182,238,207,164,80,37,224,243,28,231,
+188,248,44,173,232,154,6,200,100,3,164,141,90,160,26,38,231,25,41,13,3,31,110,68,4,151,8,224,180,240,215,33,67,94,123,36,21,41,84,183,203,38,96,149,180,84,186,48,194,215,142,226,69,96,52,135,169,186,226,
+36,58,186,81,88,232,2,1,94,6,174,82,64,228,72,130,243,174,154,128,209,162,125,249,27,152,131,113,224,215,134,167,57,70,154,168,114,70,3,156,241,65,248,90,19,140,235,232,38,119,45,96,35,1,86,73,51,89,227,
+248,133,99,58,191,97,210,23,56,190,214,23,176,145,0,37,41,212,1,252,195,10,105,42,125,197,224,28,111,186,96,2,94,206,251,132,172,37,102,0,125,208,230,109,131,211,236,142,147,168,203,102,2,92,146,66,221,
+206,250,244,139,99,68,56,139,217,157,196,223,217,76,128,115,120,14,109,163,77,102,9,35,155,9,240,31,223,9,160,77,193,130,193,143,97,179,174,98,178,146,0,99,4,84,137,96,242,93,156,174,254,161,211,178,231,
+62,18,39,209,145,117,254,126,134,244,70,78,165,203,206,156,190,158,181,1,76,146,94,42,149,53,246,219,28,5,172,135,93,192,91,192,167,250,182,176,109,158,40,130,19,134,198,125,65,87,55,59,89,15,48,8,124,
+209,234,137,24,71,204,64,133,244,234,89,19,24,118,149,0,240,248,104,250,142,34,95,233,174,159,237,188,161,225,119,184,76,128,42,254,74,129,47,147,210,17,129,169,10,231,145,34,16,160,11,56,233,65,99,135,
+119,77,248,1,69,32,0,192,152,7,17,129,145,123,3,227,36,122,173,8,4,24,240,192,25,52,101,6,122,139,64,0,226,36,122,205,131,144,240,174,129,49,251,203,5,121,57,255,245,128,0,38,180,192,206,162,16,96,206,
+3,2,152,56,110,191,169,12,124,86,0,27,121,223,3,2,124,98,202,7,248,216,241,23,51,137,31,152,55,48,230,214,50,105,53,170,203,5,24,94,212,16,152,210,114,101,41,212,18,240,91,71,223,203,132,20,106,134,128,
+230,9,160,217,245,43,210,214,44,46,225,43,41,212,201,32,194,12,8,160,73,48,10,76,56,178,238,41,96,171,15,189,125,77,59,130,255,183,145,18,39,209,32,112,134,180,251,166,109,184,1,156,148,66,205,250,248,
+181,198,73,116,141,244,234,186,204,176,94,69,208,172,20,106,68,79,184,151,244,146,129,118,166,91,231,128,121,41,212,39,122,77,62,107,236,189,198,53,64,128,213,26,32,243,104,173,28,94,107,112,2,3,220,248,
+250,123,2,1,252,70,191,129,49,255,25,8,224,177,3,8,220,11,4,112,7,189,6,198,124,16,8,224,14,70,12,140,121,51,16,192,29,188,96,96,204,249,64,0,55,34,128,17,67,67,7,31,192,17,236,55,49,168,20,234,227,64,
+0,55,112,218,192,152,119,193,190,211,193,1,79,170,126,83,206,31,232,34,211,160,1,44,134,62,240,98,170,230,225,86,32,128,253,26,160,11,115,219,242,151,3,1,236,135,169,2,157,187,213,26,195,64,0,187,113,
+196,208,184,143,206,26,6,2,216,171,254,207,26,28,254,209,105,227,80,16,98,167,231,223,135,153,115,0,0,75,82,168,239,4,13,96,183,231,111,178,66,251,137,179,244,129,0,246,105,128,49,210,123,144,76,225,23,
+181,191,4,19,96,151,234,223,6,124,65,122,7,146,9,92,151,66,237,9,26,192,78,116,144,246,25,236,48,56,199,31,215,86,85,135,84,176,61,120,31,179,247,31,86,164,80,127,94,251,151,65,3,216,161,254,199,49,223,
+125,252,103,235,157,169,8,62,64,251,133,159,71,251,184,37,224,123,82,168,149,160,1,252,19,62,164,151,112,175,219,137,36,104,128,226,11,223,249,198,145,69,11,245,170,173,99,167,115,154,246,208,211,206,
+83,6,13,144,159,240,75,82,168,213,56,137,110,3,63,202,105,218,89,41,212,208,211,254,65,32,64,126,4,176,178,125,124,200,3,152,87,249,37,224,61,210,126,7,121,126,116,103,116,235,153,167,34,248,0,6,109,61,
+105,31,192,127,215,8,63,47,44,212,219,120,51,16,192,140,224,7,117,103,147,203,192,230,156,151,177,2,236,175,247,34,141,96,2,178,197,81,157,213,107,103,75,155,183,117,3,202,186,16,156,192,214,191,250,1,
+224,29,204,167,114,235,193,148,20,170,161,59,116,130,6,104,92,224,61,164,253,118,134,181,141,239,177,100,105,11,164,13,168,9,4,104,208,110,87,195,164,56,137,94,4,170,89,179,110,210,51,249,223,144,94,146,
+213,11,188,106,241,163,108,167,137,198,211,65,3,192,91,186,10,199,213,198,19,43,58,222,127,208,76,231,148,78,143,191,252,49,29,159,187,142,99,82,168,127,53,251,159,75,158,10,127,26,179,13,154,243,194,
+168,20,170,165,2,210,82,16,190,191,194,247,138,0,58,49,114,16,125,38,46,8,223,67,13,16,39,209,50,105,175,65,151,177,93,10,149,89,151,151,78,143,132,255,134,195,194,175,238,32,246,2,139,89,14,236,211,94,
+192,62,135,215,254,181,20,170,4,44,74,161,86,3,1,154,195,65,71,215,61,33,133,218,162,19,86,153,95,22,237,147,19,232,82,95,164,170,202,63,32,133,186,98,114,162,176,29,108,39,174,106,149,127,213,244,68,
+65,3,216,7,227,95,189,175,26,192,246,54,51,231,242,250,234,189,211,0,58,9,116,2,56,111,225,242,110,1,175,75,161,30,182,99,114,47,52,128,222,37,83,150,45,235,6,48,36,133,218,9,60,108,215,34,188,49,1,186,
+65,230,20,237,239,146,58,9,116,75,161,118,85,205,82,51,219,184,193,4,52,111,14,42,192,166,156,167,173,144,222,204,161,52,17,173,65,217,51,225,3,188,148,211,116,75,164,247,252,61,175,207,230,77,216,38,
+124,95,53,64,73,107,128,207,201,190,11,199,12,240,1,48,41,133,154,115,225,125,120,151,8,210,233,212,138,20,106,43,112,170,133,161,238,144,94,233,242,27,96,143,20,170,36,133,218,77,122,34,103,206,149,247,
+17,202,194,121,84,218,253,6,240,45,224,21,210,66,208,101,224,26,143,239,236,89,38,237,221,59,95,219,202,189,182,168,52,160,152,62,67,64,64,64,64,64,64,17,241,63,178,53,33,132,148,180,95,251,0,0,0,0,73,
+69,78,68,174,66,96,130,0,0};
+
+const char* GamePage::cancel_png2 = (const char*) resource_GamePage_cancel_png2;
+const int GamePage::cancel_png2Size = 2481;
 
 
 //[EndFile] You can add extra defines here...

@@ -66,6 +66,10 @@ public:
     static const int reset_pngSize;
     static const char* showBoard_png;
     static const int showBoard_pngSize;
+    static const char* cancel_png;
+    static const int cancel_pngSize;
+    static const char* cancel_png2;
+    static const int cancel_png2Size;
 
 
 private:
@@ -82,6 +86,7 @@ private:
     void displayPlayerCurrentMove();
     bool needsPromotionChoice(String move);
     void realPlayerMove(String playerCurrentMove);
+    void cancelPreviousTurn();
     bool moveError;
     Color currentPlayerColor;
     Color realPlayerColor;
@@ -93,6 +98,8 @@ private:
     ScopedPointer<Label> *computerMoveOld;
     bool waitForPromotionChoice;
     bool waitForPlayerToMoveComputerPiece;
+    bool playerAskedToCancelPreviousTurn;
+    bool playerCanAskToCancelPreviousTurn;
     String playerMovesComputerPiece;
     String computerBestMove;
     //[/UserVariables]
@@ -108,6 +115,7 @@ private:
     ScopedPointer<ImageButton> boardButton;
     ScopedPointer<ImageButton> whiteTakesBlackButton;
     ScopedPointer<ImageButton> blackTakesWhiteButton;
+    ScopedPointer<ImageButton> cancelButton;
     ScopedPointer<Drawable> drawable1;
     ScopedPointer<Drawable> drawable2;
 

@@ -45,6 +45,7 @@ class ChessBoard {
         void init();
         void initRacingKings();
         void initWithFen(String fenFull);
+        void cancelLastMove();
 
         bool move(String move);
         Color getColor(String pos);
@@ -53,9 +54,11 @@ class ChessBoard {
         Image getPieceImage(String move);
         Image getPieceImage(int l, int n);
         void promotePawnTo(String move, Piece promotion);
+
     private:
-        Case board[8][8];    
-    
+        Case** board;    
+        Case** previousBoard;
+        void copyBoard(Case** source, Case** destination);    
 };
 
 

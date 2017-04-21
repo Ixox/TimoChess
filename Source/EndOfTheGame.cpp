@@ -145,7 +145,6 @@ void EndOfTheGame::theWinnerIs(Color winner, Color realPlayerColor, String addit
             message->setText(additionalText + "Defaite !", dontSendNotification);
         }
     }
-
 }
 
 

@@ -15,12 +15,23 @@
 // #define CB_DEBUG 1
 
 ChessBoard::ChessBoard() {
-    for (int l=0; l<8; l++) {
-        for (int r= 0; r<8; r++) {
-//            board[l][r] = new Case();
+    board = new Case*[8]; 
+    previousBoard = new Case*[8];
+    for(int i = 0; i < 8; ++i) {
+        board[i] = new Case[8];
+        previousBoard[i] = new Case[8];
+    }
+}
+
+
+void ChessBoard::copyBoard(Case** source, Case** destination) {
+    for (int l = 0; l<8 ; l++) {
+        for (int n=0 ; n< 8; n++) {
+            destination[l][n] = source[l][n];
         }
     }
 }
+
 
 void ChessBoard::init() {
     Piece row[8] = { ROCK, KNIGHT, BISHOP, QUEEN, KING, BISHOP, KNIGHT, ROCK };
@@ -160,6 +171,8 @@ void ChessBoard::initWithFen(String fenFull) {
 }
 
 bool ChessBoard::move(String move) {    
+    copyBoard(board, previousBoard);
+
     int letterSrc = move.toRawUTF8()[0] - 'a';
     if (letterSrc < 0 || letterSrc >7) {
         return false;
@@ -414,4 +427,8 @@ void ChessBoard::display() {
     }
     printf("\n");
     printf("  abcdefgh\n");
+}
+
+void ChessBoard::cancelLastMove() {
+    copyBoard(previousBoard, board);
 }

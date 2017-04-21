@@ -140,7 +140,7 @@ int StockfishWrapper::startStockfishProcess() {
 
 void StockfishWrapper::initUCI() {
     fprintf(ostream, "uci\n");
-    fprintf(ostream, "setoption name Threads value 4\n");
+    // fprintf(ostream, "setoption name Threads value 4\n");
     fprintf(ostream, "setoption name Hash value 128\n");
     // fprintf(ostream, "setoption name MultiPV value 2\n");
     // fprintf(ostream, "setoption name Minimum Thinking Time value 2000\n");
