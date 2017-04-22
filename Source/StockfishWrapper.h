@@ -90,6 +90,7 @@ class StockfishWrapper {
         String lookForString;
         LookFor* lookForThread;
         String startingFen;
+        int level;
 };
 
 

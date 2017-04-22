@@ -199,6 +199,9 @@ void StockfishWrapper::addMove(String move)
 
 void StockfishWrapper::setLevel(int level)
 {
+    this->level = level;
+    // For level 0 & 1 we set level to 0 and modify nodes in the "go" command
+    level = (level >= 2 ? level -2 : 0);
     fprintf(ostream, "setoption name Skill Level value %i\n", level);
     printf(">>>> setoption name Skill Level value %i <<<<\n", level);
     
@@ -283,10 +286,19 @@ void StockfishWrapper::startSearchingBestMove()
     }
     
     startLookingFor("bestmove");
-    fprintf(ostream, "go  \n");
+    if (level < 2) {
+        // level = 0 : skill 0 & nodes 3
+        // level = 1 : skill 0 & nodes 33
+        fprintf(ostream, "go  nodes %i \n", (3 + (level * 30)));
 #ifdef SW_DEBUG    
-    printf(">>>>> go \n");
+        printf(">>>>> go  nodes %i \n", (3 + (level * 30)));
 #endif
+    } else {
+        fprintf(ostream, "go  \n");
+#ifdef SW_DEBUG    
+        printf(">>>>> go \n");
+#endif
+    }
 }
 
 
