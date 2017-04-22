@@ -19,6 +19,7 @@
 #include "StockfishWrapper.h"
 
 // #define SW_DEBUG 1
+// #define SW_DEBUG_LOG 1
 
 /*
   ==============================================================================
@@ -32,7 +33,7 @@ void LookFor::run() {
     ssize_t read;        
     line = (char*)malloc(1024);
     while ((read = getline(&line, &len, stockfishWrapper->istream)) != -1) {
-#ifdef SW_DEBUG
+#ifdef SW_DEBUG_LOG
          printf("SF >>> %s", line);
 #endif
         StringArray words;
@@ -52,19 +53,19 @@ void LookFor::run() {
             String value  = words[k + 1];
             if (word == "ponder") {
                 String sf_ponder = value;
-#ifdef SW_DEBUG
+#ifdef SW_DEBUG_LOG
                 printf("SF * ponder : %s\n", sf_ponder.toRawUTF8());
 #endif
                 stockfishWrapper->setPonder(sf_ponder);
             } else if (word == "mate") { 
                 int sf_mate = atoi(value.toRawUTF8());
-#ifdef SW_DEBUG
+#ifdef SW_DEBUG_LOG
                 printf("SF * mate : %i\n", sf_mate);
 #endif                    
                 stockfishWrapper->setMate(sf_mate);
             } else if (word == "cp") { 
                 int sf_cp = atoi(value.toRawUTF8());
-#ifdef SW_DEBUG
+#ifdef SW_DEBUG_LOG
                 printf("SF * cp : %i\n", sf_cp);
 #endif                    
                 stockfishWrapper->setCp(sf_cp);
@@ -197,15 +198,22 @@ void StockfishWrapper::addMove(String move)
     moves.append(new Move(move));
 }
 
-void StockfishWrapper::setLevel(int level)
+void StockfishWrapper::setLevel(int skillLevel, int nodesMax)
 {
-    this->level = level;
-    // For level 0 & 1 we set level to 0 and modify nodes in the "go" command
-    level = (level >= 2 ? level -2 : 0);
-    fprintf(ostream, "setoption name Skill Level value %i\n", level);
-    printf(">>>> setoption name Skill Level value %i <<<<\n", level);
+    this->skillLevel = skillLevel;
+    this->nodesMax = nodesMax;
+    fprintf(ostream, "setoption name Skill Level value %i\n", skillLevel);
+
+#ifdef SW_DEBUG    
+    printf(">>>>  nodesMax   = %i \n", nodesMax);
+    printf(">>>>  skillLevel = %i \n", skillLevel);
+    printf(">>>> setoption name Skill Level value %i <<<<\n", skillLevel);
+#endif
+
+
     
 }
+
 
 
 void StockfishWrapper::setVariant(Variant variant)
@@ -213,15 +221,16 @@ void StockfishWrapper::setVariant(Variant variant)
     this->variant = variant;
     String variantName = "#NOT_DEFINED#";
     switch (variant) {
-        case CHESS:
-            variantName = "chess";
-            break;
         case ATOMIC:
             variantName = "atomic";
             break;
         case RACING_KINGS:
             variantName = "racingkings";
             break;
+        default:
+            variantName = "chess";
+            break;
+
     }
     fprintf(ostream, "setoption name UCI_Variant value %s\n", variantName.toRawUTF8());
     printf(">>>> setoption name UCI_Variant value %s\n", variantName.toRawUTF8());
@@ -286,12 +295,10 @@ void StockfishWrapper::startSearchingBestMove()
     }
     
     startLookingFor("bestmove");
-    if (level < 2) {
-        // level = 0 : skill 0 & nodes 3
-        // level = 1 : skill 0 & nodes 33
-        fprintf(ostream, "go  nodes %i \n", (3 + (level * 30)));
+    if (nodesMax > 0) {
+        fprintf(ostream, "go  nodes %i \n", nodesMax);
 #ifdef SW_DEBUG    
-        printf(">>>>> go  nodes %i \n", (3 + (level * 30)));
+        printf(">>>>> go  nodes %i \n", nodesMax);
 #endif
     } else {
         fprintf(ostream, "go  \n");
@@ -308,7 +315,7 @@ String StockfishWrapper::checkBestMove() {
         StringArray strings;
         strings.addTokens (bestMoveLine, " \n", "\"");
         String bm = strings[1];
-#ifdef SW_DEBUG       
+#ifdef SW_DEBUG_LOG
         printf(">>>> BESTMOVE : %s\n", bm.toRawUTF8());
 #endif
         return bm;

@@ -50,7 +50,8 @@ public:
     //[UserMethods]     -- You can add your own custom methods in this section.
     void setGameListener(GameListener *gl);
     Color getRealPlayerColor() { return realPlayerColor; }
-    int  getLevel() { return level; }
+    int  getMainLevel() { return mainLevel; }
+    int  getSubLevel() { return subLevel; }
     Variant getVariant() { return variant; }
     //[/UserMethods]
 
@@ -85,7 +86,8 @@ private:
     //[UserVariables]   -- You can add your own custom variables in this section.
     GameListener *gameListener;
     Color realPlayerColor;
-    int level;
+    int mainLevel;
+    int subLevel;
     Variant variant;
     //[/UserVariables]
 
@@ -93,11 +95,12 @@ private:
     ScopedPointer<ImageButton> whiteButton;
     ScopedPointer<ImageButton> blackButton;
     ScopedPointer<ImageButton> playButton;
-    ScopedPointer<Slider> slider;
+    ScopedPointer<Slider> levelSlider;
     ScopedPointer<Label> title;
     ScopedPointer<ImageButton> vChess;
     ScopedPointer<ImageButton> vRacingKings;
-    ScopedPointer<ImageButton> vAtomic;
+    ScopedPointer<ToggleButton> beginnerButton;
+    ScopedPointer<ToggleButton> proButton;
     Image cachedImage_timochess_jpg_1;
 
 

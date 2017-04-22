@@ -17,6 +17,7 @@
 #include "StockfishWrapper.h"
 #include "ChessBoard.h"
 #include "EndOfTheGame.h"
+#include "TimoChessLookAndFeel.h"
 
 //==============================================================================
 class TimoChessApplication  : public JUCEApplication
@@ -71,6 +72,9 @@ public:
                                                     Colours::lightgrey,
                                                     DocumentWindow::allButtons)
         {
+            
+            LookAndFeel::setDefaultLookAndFeel (&timoChessLookAndFeel);
+            
             setUsingNativeTitleBar (true);
             gameSetup = new GameSetup();
             gameSetup->setGameListener(this);
@@ -136,7 +140,14 @@ public:
             // PATE !
              //stockfish->setStartingFen( "k7/P7/K7/8/8/4B3/8/8 w - - 0 1");
 
-            stockfish->setLevel(gameSetup->getLevel()); 
+            if (gameSetup->getMainLevel() == 0) {
+                // begginner level : skill = 0, nodesMax = 3 + sublevel * 10;
+                stockfish->setLevel(0, 3 + gameSetup->getSubLevel() * 10);
+            } else {
+                // pro level : skill = sublevel / no nodesMax 
+                stockfish->setLevel(gameSetup->getSubLevel(), 0);
+            }
+
             stockfish->setVariant(gameSetup->getVariant()); 
 
             gamePage->start(gameSetup->getRealPlayerColor());
@@ -182,6 +193,7 @@ public:
         PawnPromotion *pawnPromotion;
         EndOfTheGame *endOfTheGame;
         StockfishWrapper *stockfish;
+        TimoChessLookAndFeel timoChessLookAndFeel;
         JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainWindow)
     };
 

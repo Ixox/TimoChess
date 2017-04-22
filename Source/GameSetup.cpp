@@ -59,16 +59,16 @@ GameSetup::GameSetup ()
                            ImageCache::getFromMemory (start_png, start_pngSize), 1.000f, Colour (0x00000000),
                            Image(), 1.000f, Colour (0x00000000),
                            Image(), 1.000f, Colour (0x00000000));
-    addAndMakeVisible (slider = new Slider ("new slider"));
-    slider->setRange (0, 20, 1);
-    slider->setSliderStyle (Slider::LinearHorizontal);
-    slider->setTextBoxStyle (Slider::TextBoxAbove, true, 80, 40);
-    slider->addListener (this);
+    addAndMakeVisible (levelSlider = new Slider ("level slider"));
+    levelSlider->setRange (1, 10, 1);
+    levelSlider->setSliderStyle (Slider::IncDecButtons);
+    levelSlider->setTextBoxStyle (Slider::TextBoxAbove, true, 80, 40);
+    levelSlider->addListener (this);
 
     addAndMakeVisible (title = new Label ("title label",
                                           TRANS("TimoChess")));
-    title->setFont (Font ("OpenDyslexicAlta", 120.00f, Font::bold));
-    title->setJustificationType (Justification::centredTop);
+    title->setFont (Font ("OpenDyslexicAlta", 100.00f, Font::bold));
+    title->setJustificationType (Justification::topRight);
     title->setEditable (false, false, false);
     title->setColour (Label::textColourId, Colour (0xff8cb4b5));
     title->setColour (TextEditor::textColourId, Colours::black);
@@ -92,24 +92,36 @@ GameSetup::GameSetup ()
                              ImageCache::getFromMemory (vRacingKings_png, vRacingKings_pngSize), 0.400f, Colour (0x00000000),
                              Image(), 1.000f, Colour (0x00000000),
                              Image(), 1.000f, Colours::white);
-    addAndMakeVisible (vAtomic = new ImageButton ("vAtomic button"));
-    vAtomic->setConnectedEdges (Button::ConnectedOnRight);
-    vAtomic->setRadioGroupId (1);
-    vAtomic->addListener (this);
+    addAndMakeVisible (beginnerButton = new ToggleButton ("begginer button"));
+    beginnerButton->setButtonText (CharPointer_UTF8 ("D\xc3\xa9""butant"));
+    beginnerButton->setRadioGroupId (3);
+    beginnerButton->addListener (this);
+    beginnerButton->setToggleState (true, dontSendNotification);
+    beginnerButton->setColour (ToggleButton::textColourId, Colours::white);
 
-    vAtomic->setImages (false, true, true,
-                        ImageCache::getFromMemory (vAtomic_png, vAtomic_pngSize), 0.400f, Colour (0x00000000),
-                        Image(), 1.000f, Colour (0x00000000),
-                        Image(), 1.000f, Colours::white);
+    addAndMakeVisible (proButton = new ToggleButton ("pro button"));
+    proButton->setButtonText (TRANS("Professionnel"));
+    proButton->setRadioGroupId (3);
+    proButton->addListener (this);
+    proButton->setColour (ToggleButton::textColourId, Colours::white);
+
     cachedImage_timochess_jpg_1 = ImageCache::getFromMemory (timochess_jpg, timochess_jpgSize);
 
     //[UserPreSize]
+
     whiteButton->setClickingTogglesState(true);
     blackButton->setClickingTogglesState(true);
     whiteButton->setToggleState(true, dontSendNotification);
 
     vChess->setClickingTogglesState(true);
-    vAtomic->setClickingTogglesState(true);
+
+    // beginner
+    this->mainLevel = 0;
+
+    this->subLevel = 3;
+    levelSlider->setValue(this->subLevel , dontSendNotification);
+
+    // vAtomic->setClickingTogglesState(true);
     vRacingKings->setClickingTogglesState(true);
     vChess->setToggleState(true, dontSendNotification);
 
@@ -120,7 +132,6 @@ GameSetup::GameSetup ()
 
     //[Constructor] You can add your own custom stuff here..
     this->realPlayerColor = WHITE;
-    this->level = 0;
     //[/Constructor]
 }
 
@@ -132,11 +143,12 @@ GameSetup::~GameSetup()
     whiteButton = nullptr;
     blackButton = nullptr;
     playButton = nullptr;
-    slider = nullptr;
+    levelSlider = nullptr;
     title = nullptr;
     vChess = nullptr;
     vRacingKings = nullptr;
-    vAtomic = nullptr;
+    beginnerButton = nullptr;
+    proButton = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -156,6 +168,15 @@ void GameSetup::paint (Graphics& g)
                  0, 0, proportionOfWidth (1.0000f), proportionOfHeight (1.0000f),
                  0, 0, cachedImage_timochess_jpg_1.getWidth(), cachedImage_timochess_jpg_1.getHeight());
 
+    g.setColour (Colour (0x777dceae));
+    g.drawRoundedRectangle (static_cast<float> (proportionOfWidth (0.0594f)), static_cast<float> (proportionOfHeight (0.2356f)), static_cast<float> (proportionOfWidth (0.3979f)), static_cast<float> (proportionOfHeight (0.2741f)), 10.000f, 2.000f);
+
+    g.setColour (Colour (0x777dceae));
+    g.drawRoundedRectangle (static_cast<float> (proportionOfWidth (0.5452f)), static_cast<float> (proportionOfHeight (0.2356f)), static_cast<float> (proportionOfWidth (0.3979f)), static_cast<float> (proportionOfHeight (0.2741f)), 10.000f, 2.000f);
+
+    g.setColour (Colour (0x777dceae));
+    g.drawRoundedRectangle (static_cast<float> (proportionOfWidth (0.0594f)), static_cast<float> (proportionOfHeight (0.5953f)), static_cast<float> (proportionOfWidth (0.6615f)), static_cast<float> (proportionOfHeight (0.3255f)), 10.000f, 2.000f);
+
     //[UserPaint] Add your own custom painting code here..
     //[/UserPaint]
 }
@@ -165,14 +186,15 @@ void GameSetup::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    whiteButton->setBounds (proportionOfWidth (0.3423f), proportionOfHeight (0.6783f), proportionOfWidth (0.1498f), proportionOfHeight (0.1997f));
-    blackButton->setBounds (proportionOfWidth (0.5388f), proportionOfHeight (0.6783f), proportionOfWidth (0.1498f), proportionOfHeight (0.1997f));
-    playButton->setBounds (proportionOfWidth (0.7868f), proportionOfHeight (0.7405f), proportionOfWidth (0.1675f), proportionOfHeight (0.1974f));
-    slider->setBounds (proportionOfWidth (0.0432f), proportionOfHeight (0.5167f), proportionOfWidth (0.9263f), proportionOfHeight (0.0932f));
-    title->setBounds (proportionOfWidth (0.2598f), proportionOfHeight (0.0000f), proportionOfWidth (0.4877f), proportionOfHeight (0.2238f));
-    vChess->setBounds (proportionOfWidth (0.2873f), proportionOfHeight (0.2549f), proportionOfWidth (0.1498f), proportionOfHeight (0.1997f));
-    vRacingKings->setBounds (proportionOfWidth (0.4681f), proportionOfHeight (0.2549f), proportionOfWidth (0.1498f), proportionOfHeight (0.1997f));
-    vAtomic->setBounds (proportionOfWidth (0.6449f), proportionOfHeight (0.2611f), proportionOfWidth (0.1498f), proportionOfHeight (0.1997f));
+    whiteButton->setBounds (proportionOfWidth (0.5543f), proportionOfHeight (0.2741f), proportionOfWidth (0.1499f), proportionOfHeight (0.1991f));
+    blackButton->setBounds (proportionOfWidth (0.7571f), proportionOfHeight (0.2741f), proportionOfWidth (0.1499f), proportionOfHeight (0.1991f));
+    playButton->setBounds (proportionOfWidth (0.7817f), proportionOfHeight (0.6488f), proportionOfWidth (0.1667f), proportionOfHeight (0.1970f));
+    levelSlider->setBounds (proportionOfWidth (0.3514f), proportionOfHeight (0.6510f), proportionOfWidth (0.3101f), proportionOfHeight (0.2227f));
+    title->setBounds (proportionOfWidth (0.4419f), proportionOfHeight (-0.0171f), proportionOfWidth (0.4871f), proportionOfHeight (0.1713f));
+    vChess->setBounds (proportionOfWidth (0.0891f), proportionOfHeight (0.2741f), proportionOfWidth (0.1499f), proportionOfHeight (0.1991f));
+    vRacingKings->setBounds (proportionOfWidth (0.2662f), proportionOfHeight (0.2741f), proportionOfWidth (0.1499f), proportionOfHeight (0.1991f));
+    beginnerButton->setBounds (proportionOfWidth (0.1215f), proportionOfHeight (0.6253f), proportionOfWidth (0.1938f), proportionOfHeight (0.1328f));
+    proButton->setBounds (proportionOfWidth (0.1215f), proportionOfHeight (0.7452f), proportionOfWidth (0.1938f), proportionOfHeight (0.1328f));
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -214,11 +236,17 @@ void GameSetup::buttonClicked (Button* buttonThatWasClicked)
         variant = RACING_KINGS;
         //[/UserButtonCode_vRacingKings]
     }
-    else if (buttonThatWasClicked == vAtomic)
+    else if (buttonThatWasClicked == beginnerButton)
     {
-        //[UserButtonCode_vAtomic] -- add your button handler code here..
-        variant = ATOMIC;
-        //[/UserButtonCode_vAtomic]
+        //[UserButtonCode_beginnerButton] -- add your button handler code here..
+        this->mainLevel = 0;
+        //[/UserButtonCode_beginnerButton]
+    }
+    else if (buttonThatWasClicked == proButton)
+    {
+        //[UserButtonCode_proButton] -- add your button handler code here..
+        this->mainLevel = 1;
+        //[/UserButtonCode_proButton]
     }
 
     //[UserbuttonClicked_Post]
@@ -230,10 +258,11 @@ void GameSetup::sliderValueChanged (Slider* sliderThatWasMoved)
     //[UsersliderValueChanged_Pre]
     //[/UsersliderValueChanged_Pre]
 
-    if (sliderThatWasMoved == slider)
+    if (sliderThatWasMoved == levelSlider)
     {
-        //[UserSliderCode_slider] -- add your slider handling code here..
-        //[/UserSliderCode_slider]
+        //[UserSliderCode_levelSlider] -- add your slider handling code here..
+        this->subLevel = levelSlider->getValue();
+        //[/UserSliderCode_levelSlider]
     }
 
     //[UsersliderValueChanged_Post]
@@ -273,58 +302,66 @@ BEGIN_JUCER_METADATA
   </METHODS>
   <BACKGROUND backgroundColour="ff2d6661">
     <IMAGE pos="0 0 100% 100%" resource="timochess_jpg" opacity="0.5" mode="0"/>
+    <ROUNDRECT pos="5.943% 23.555% 39.793% 27.409%" cornerSize="10" fill="solid: 2aa58f"
+               hasStroke="1" stroke="2, mitered, butt" strokeColour="solid: 777dceae"/>
+    <ROUNDRECT pos="54.522% 23.555% 39.793% 27.409%" cornerSize="10" fill="solid: 2aa58f"
+               hasStroke="1" stroke="2, mitered, butt" strokeColour="solid: 777dceae"/>
+    <ROUNDRECT pos="5.943% 59.529% 66.15% 32.548%" cornerSize="10" fill="solid: 2aa58f"
+               hasStroke="1" stroke="2, mitered, butt" strokeColour="solid: 777dceae"/>
   </BACKGROUND>
   <IMAGEBUTTON name="white button" id="4b1de836899aead5" memberName="whiteButton"
-               virtualName="" explicitFocusOrder="0" pos="34.234% 67.832% 14.98% 19.969%"
+               virtualName="" explicitFocusOrder="0" pos="55.426% 27.409% 14.987% 19.914%"
                buttonText="white button" connectedEdges="2" needsCallback="1"
                radioGroupId="2" keepProportions="1" resourceNormal="white_png"
                opacityNormal="1" colourNormal="0" resourceOver="" opacityOver="1"
                colourOver="0" resourceDown="whiteChecked_png" opacityDown="1"
                colourDown="0"/>
   <IMAGEBUTTON name="black button" id="8f9802a005f0b62" memberName="blackButton"
-               virtualName="" explicitFocusOrder="1" pos="53.88% 67.832% 14.98% 19.969%"
+               virtualName="" explicitFocusOrder="1" pos="75.711% 27.409% 14.987% 19.914%"
                buttonText="black button" connectedEdges="1" needsCallback="1"
                radioGroupId="2" keepProportions="1" resourceNormal="black_png"
                opacityNormal="1" colourNormal="0" resourceOver="" opacityOver="1"
                colourOver="0" resourceDown="blackChecked_png" opacityDown="1"
                colourDown="0"/>
   <IMAGEBUTTON name="play button" id="e2925e0313306aa3" memberName="playButton"
-               virtualName="" explicitFocusOrder="0" pos="78.684% 74.048% 16.749% 19.736%"
+               virtualName="" explicitFocusOrder="0" pos="78.165% 64.882% 16.667% 19.7%"
                buttonText="PLAY" connectedEdges="0" needsCallback="1" radioGroupId="0"
                keepProportions="1" resourceNormal="start_png" opacityNormal="1"
                colourNormal="0" resourceOver="" opacityOver="1" colourOver="0"
                resourceDown="" opacityDown="1" colourDown="0"/>
-  <SLIDER name="new slider" id="f78f4afb51257937" memberName="slider" virtualName=""
-          explicitFocusOrder="0" pos="4.322% 51.671% 92.633% 9.324%" min="0"
-          max="20" int="1" style="LinearHorizontal" textBoxPos="TextBoxAbove"
+  <SLIDER name="level slider" id="f78f4afb51257937" memberName="levelSlider"
+          virtualName="" explicitFocusOrder="0" pos="35.142% 65.096% 31.008% 22.27%"
+          min="1" max="10" int="1" style="IncDecButtons" textBoxPos="TextBoxAbove"
           textBoxEditable="0" textBoxWidth="80" textBoxHeight="40" skewFactor="1"
           needsCallback="1"/>
   <LABEL name="title label" id="a109198f996a6439" memberName="title" virtualName=""
-         explicitFocusOrder="0" pos="25.982% 0% 48.772% 22.378%" textCol="ff8cb4b5"
-         edTextCol="ff000000" edBkgCol="0" labelText="TimoChess" editableSingleClick="0"
-         editableDoubleClick="0" focusDiscardsChanges="0" fontname="OpenDyslexicAlta"
-         fontsize="120" bold="1" italic="0" justification="12"/>
+         explicitFocusOrder="0" pos="44.186% -1.713% 48.708% 17.131%"
+         textCol="ff8cb4b5" edTextCol="ff000000" edBkgCol="0" labelText="TimoChess"
+         editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
+         fontname="OpenDyslexicAlta" fontsize="100" bold="1" italic="0"
+         justification="10"/>
   <IMAGEBUTTON name="vChess button" id="472079481fd546a5" memberName="vChess"
-               virtualName="" explicitFocusOrder="0" pos="28.733% 25.486% 14.98% 19.969%"
+               virtualName="" explicitFocusOrder="0" pos="8.915% 27.409% 14.987% 19.914%"
                buttonText="vChess button" connectedEdges="2" needsCallback="1"
                radioGroupId="1" keepProportions="1" resourceNormal="vChess_png"
                opacityNormal="0.40000000596046447754" colourNormal="0" resourceOver=""
                opacityOver="1" colourOver="0" resourceDown="" opacityDown="1"
                colourDown="ffffffff"/>
   <IMAGEBUTTON name="vRacingKings button" id="e3540ffb805f3e3c" memberName="vRacingKings"
-               virtualName="" explicitFocusOrder="0" pos="46.807% 25.486% 14.98% 19.969%"
+               virtualName="" explicitFocusOrder="0" pos="26.615% 27.409% 14.987% 19.914%"
                buttonText="vRacingKings button" connectedEdges="2" needsCallback="1"
                radioGroupId="1" keepProportions="1" resourceNormal="vRacingKings_png"
                opacityNormal="0.40000000596046447754" colourNormal="0" resourceOver=""
                opacityOver="1" colourOver="0" resourceDown="" opacityDown="1"
                colourDown="ffffffff"/>
-  <IMAGEBUTTON name="vAtomic button" id="74ebb4e00376a7a5" memberName="vAtomic"
-               virtualName="" explicitFocusOrder="0" pos="64.489% 26.107% 14.98% 19.969%"
-               buttonText="vAtomic button" connectedEdges="2" needsCallback="1"
-               radioGroupId="1" keepProportions="1" resourceNormal="vAtomic_png"
-               opacityNormal="0.40000000596046447754" colourNormal="0" resourceOver=""
-               opacityOver="1" colourOver="0" resourceDown="" opacityDown="1"
-               colourDown="ffffffff"/>
+  <TOGGLEBUTTON name="begginer button" id="c1813e97dea079f3" memberName="beginnerButton"
+                virtualName="" explicitFocusOrder="0" pos="12.145% 62.527% 19.38% 13.276%"
+                txtcol="ffffffff" buttonText="D&#233;butant" connectedEdges="0"
+                needsCallback="1" radioGroupId="3" state="1"/>
+  <TOGGLEBUTTON name="pro button" id="79161619161a3a46" memberName="proButton"
+                virtualName="" explicitFocusOrder="0" pos="12.145% 74.518% 19.38% 13.276%"
+                txtcol="ffffffff" buttonText="Professionnel" connectedEdges="0"
+                needsCallback="1" radioGroupId="3" state="0"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

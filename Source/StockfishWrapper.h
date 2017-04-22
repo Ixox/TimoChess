@@ -55,7 +55,7 @@ class StockfishWrapper {
         void addMove(String move);
         void startSearchingBestMove();
         void startSearchingBestMoveInMillis(int millis);
-        void setLevel(int level);
+        void setLevel(int skill, int nodesMax);
         void setVariant(Variant variant);
         Variant getVariant() { return variant; }
         String checkBestMove();
@@ -90,7 +90,8 @@ class StockfishWrapper {
         String lookForString;
         LookFor* lookForThread;
         String startingFen;
-        int level;
+        int skillLevel;
+        int nodesMax;
 };
 
 
