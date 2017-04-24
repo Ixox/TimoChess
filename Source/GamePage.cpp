@@ -533,9 +533,12 @@ void GamePage::timerCallback() {
                     return;
                 } else if (turnNumber > 0) {
                     // No ponder => means Slatemate
-                    stopTimer();
-                    gameListener->gameFinished(NOCOLOR, realPlayerColor, bestMove + " : ");
-                    return;
+                    // BUG 24 April 2017 : does not work !
+                    // Computer may display Draw Game when it's not draw at all !
+                    /////////////////////
+                    // stopTimer();
+                    // gameListener->gameFinished(NOCOLOR, realPlayerColor, bestMove + " : ");
+                    // return;
                 }
             }
 
