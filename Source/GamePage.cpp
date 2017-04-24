@@ -615,6 +615,7 @@ void GamePage::cancelPreviousTurn() {
 
     // Clean taken pieces from previous play
     playerCurrentMove.clear();
+    computerBestMove.clear();
     displayPlayerCurrentMove();
 
     String previousComputerMove = (*computerMoveOld)->getText();
@@ -764,6 +765,8 @@ void GamePage::start(Color realPlayerColor) {
     }
 
     playerCurrentMove.clear();
+    computerBestMove.clear();
+
     displayPlayerCurrentMove();
     if (this->realPlayerColor == BLACK) {
         (*playerMove)->setText("", dontSendNotification);
