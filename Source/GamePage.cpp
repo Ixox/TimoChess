@@ -271,7 +271,7 @@ void GamePage::buttonClicked (Button* buttonThatWasClicked)
     else if (buttonThatWasClicked == boardButton)
     {
         //[UserButtonCode_boardButton] -- add your button handler code here..
-         this->gameListener->showBoard(&board);
+         this->gameListener->showBoard(&board, computerBestMove);
         //[/UserButtonCode_boardButton]
     }
     else if (buttonThatWasClicked == whiteTakesBlackButton)
@@ -306,7 +306,7 @@ bool GamePage::keyPressed (const KeyPress& key)
     }
 
     if (key == 'z') {
-        this->gameListener->showBoard(&board);
+        this->gameListener->showBoard(&board,computerBestMove);
         return true;
     }
 
@@ -545,6 +545,7 @@ void GamePage::timerCallback() {
             stockfish->addMove(bestMove);
             board.move(bestMove);
             currentPlayerColor = currentPlayerColor == WHITE ? BLACK : WHITE;
+            computerBestMove.clear();
             // Cannot cancel previous turn during player's turn
             playerCanAskToCancelPreviousTurn = false;
             cancelButton->setEnabled(false);

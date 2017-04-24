@@ -69,6 +69,7 @@ BoardComponent::BoardComponent ()
 
 
     //[Constructor] You can add your own custom stuff here..
+    computerMove = "";
     //[/Constructor]
 }
 
@@ -105,7 +106,14 @@ void BoardComponent::paint (Graphics& g)
     float caseWidth = .08f;
     for (int l= 0 ; l < 8; l++) {
         for (int n = 0; n < 8; n++) {
-            if (((l+n) & 0x1) == 0) {
+            char currentCaseString[3];
+            currentCaseString[0] = (char)('a' + l);
+            currentCaseString[1] = (char)('8' - n);
+            currentCaseString[2] = '\0';
+
+            if (computerMove.contains(currentCaseString)) {
+                g.setColour(Colours::red);
+            } else if (((l+n) & 0x1) == 0) {
                 g.setColour(Colours::white);
             } else {
                 g.setColour(Colours::grey);
@@ -176,13 +184,14 @@ void BoardComponent::setGameListener(GameListener *gl) {
     this->gameListener = gl;
 }
 
-void BoardComponent::setChessboard(ChessBoard *chessBoard) {
+void BoardComponent::setChessboard(ChessBoard *chessBoard, String computerMove) {
     this->chessBoard = chessBoard;
     for (int l= 0 ; l < 8; l++) {
         for (int n = 0; n < 8; n++) {
             boardCase[l][n]->setImage(chessBoard->getPieceImage(l, n));
         }
     }
+    this->computerMove = computerMove;
 }
 //[/MiscUserCode]
 

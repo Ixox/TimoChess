@@ -18,7 +18,7 @@ class GameListener {
     virtual void setup() = 0;
     virtual void startGame() = 0;
     virtual void resumeGame() = 0;
-    virtual void showBoard(ChessBoard* chessBoard) = 0;
+    virtual void showBoard(ChessBoard* chessBoard, String computerMove) = 0;
     virtual void askForPromotionPiece(Color color) = 0;
     virtual void answerPromotionPiece(Piece promotion) = 0;    
     virtual void gameFinished(Color winner, Color realPlayerColor, String additionalText) = 0;    

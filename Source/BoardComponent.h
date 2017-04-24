@@ -47,7 +47,7 @@ public:
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
     void setGameListener(GameListener *gl);
-    void setChessboard(ChessBoard *chessBoard);
+    void setChessboard(ChessBoard *chessBoard, String computerMove);
     //[/UserMethods]
 
     void paint (Graphics& g) override;
@@ -64,6 +64,7 @@ private:
     ScopedPointer<DrawableImage> boardCase[8][8];
     ScopedPointer<Label> letterLabel[8];
     ScopedPointer<Label> numberLabel[8];
+    String computerMove;
     //[/UserVariables]
 
     //==============================================================================

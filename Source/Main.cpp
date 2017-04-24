@@ -34,7 +34,6 @@ public:
     void initialise (const String& commandLine) override
     {
         // This method is where you should put your application's initialisation code..
-
         mainWindow = new MainWindow (getApplicationName());
     }
 
@@ -72,9 +71,7 @@ public:
                                                     Colours::lightgrey,
                                                     DocumentWindow::allButtons)
         {
-            
             LookAndFeel::setDefaultLookAndFeel (&timoChessLookAndFeel);
-            
             setUsingNativeTitleBar (true);
             gameSetup = new GameSetup();
             gameSetup->setGameListener(this);
@@ -160,8 +157,8 @@ public:
             setVisible (true);
             gamePage->grabKeyboardFocus();
         }
-        void showBoard(ChessBoard* chessBoard) {
-            boardComponent->setChessboard(chessBoard);
+        void showBoard(ChessBoard* chessBoard, String computerMove) {
+            boardComponent->setChessboard(chessBoard, computerMove);
             setContentNonOwned (boardComponent, true);
             setVisible (true);
             boardComponent->grabKeyboardFocus();
