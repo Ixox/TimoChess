@@ -102,6 +102,7 @@ private:
     bool playerCanAskToCancelPreviousTurn;
     String playerMovesComputerPiece;
     String computerBestMove;
+    int turnNumber;
     //[/UserVariables]
 
     //==============================================================================

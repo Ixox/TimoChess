@@ -390,6 +390,8 @@ bool GamePage::keyPressed (const KeyPress& key)
 
 
 void GamePage::realPlayerMove(String playerCurrentMove) {
+    // Increase turn number
+    turnNumber ++;
     // Here playerCurrentMove must be valid
     stockfish->addMove(playerCurrentMove);
     // Check validity
@@ -529,7 +531,7 @@ void GamePage::timerCallback() {
                     stopTimer();
                     gameListener->gameFinished(currentPlayerColor, realPlayerColor, bestMove + " : ");
                     return;
-                } else {
+                } else if (turnNumber > 0) {
                     // No ponder => means Slatemate
                     stopTimer();
                     gameListener->gameFinished(NOCOLOR, realPlayerColor, bestMove + " : ");
@@ -730,6 +732,7 @@ void GamePage::start(Color realPlayerColor) {
     this->stockfish->startGame();
 
     ticTac = 0;
+    turnNumber = 0; 
     startTimer(250);
 
     if (this->realPlayerColor == BLACK) {
