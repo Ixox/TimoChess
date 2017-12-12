@@ -1,6 +1,6 @@
 # TimoChess
 
-This goal of this project was to be able to play chess against a computer but using a real board and real pieces. Of cours i wanted to limit the cost.
+This goal of this project was to be able to play chess against a computer but using a real board and real pieces. Of course i wanted to limit the cost.
 <br /><br />
 <img src="pictures/TimoChess_01.jpg" width="600px" />
 <br /><br />
@@ -10,7 +10,7 @@ The UI is based on Juce (https://www.juce.com/).
 <img src="pictures/TimoChess_02.jpg" width="400px" />
 <br /><br />
 It uses a regular chess board. I drilled 64 holes so that push buttons go through and appear above the surface. Push buttons are fixed from the bottom with custom 3D printed (red) pieces. <br />
-It took some time to solder all those wires but it's easy.
+It takes some time to solder all those wires but it's simple.
 <br /><br />
 <img src="pictures/TimoChess_03.jpg" width="400px" />
 <br /><br />
